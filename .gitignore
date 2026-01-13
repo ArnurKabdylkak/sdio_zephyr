@@ -1,0 +1,9 @@
+infineon-lp-main
+bootloader
+build
+modules
+tools
+zephyr
+dump
+.vscode
+.vscode-ctags

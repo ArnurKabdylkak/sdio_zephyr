@@ -1,0 +1,1789 @@
+
+wifi_firmware.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+       0:	30047073          	csrci	mstatus,8
+       4:	30401073          	csrw	mie,zero
+       8:	10000197          	auipc	gp,0x10000
+       c:	7f818193          	addi	gp,gp,2040 # 10000800 <__global_pointer$>
+      10:	10002117          	auipc	sp,0x10002
+      14:	ff010113          	addi	sp,sp,-16 # 10002000 <_fstack>
+      18:	00001297          	auipc	t0,0x1
+      1c:	17028293          	addi	t0,t0,368 # 1188 <_erodata>
+      20:	10000317          	auipc	t1,0x10000
+      24:	fe030313          	addi	t1,t1,-32 # 10000000 <g_cyw_dev>
+      28:	10000397          	auipc	t2,0x10000
+      2c:	fd838393          	addi	t2,t2,-40 # 10000000 <g_cyw_dev>
+      30:	00735963          	bge	t1,t2,42 <_start+0x42>
+      34:	0002ae03          	lw	t3,0(t0)
+      38:	01c32023          	sw	t3,0(t1)
+      3c:	0291                	addi	t0,t0,4
+      3e:	0311                	addi	t1,t1,4
+      40:	bfc5                	j	30 <_start+0x30>
+      42:	10000297          	auipc	t0,0x10000
+      46:	fbe28293          	addi	t0,t0,-66 # 10000000 <g_cyw_dev>
+      4a:	10001317          	auipc	t1,0x10001
+      4e:	02e30313          	addi	t1,t1,46 # 10001078 <_bss_end>
+      52:	0062d663          	bge	t0,t1,5e <_start+0x5e>
+      56:	0002a023          	sw	zero,0(t0)
+      5a:	0291                	addi	t0,t0,4
+      5c:	bfdd                	j	52 <_start+0x52>
+      5e:	2021                	jal	66 <main>
+      60:	10500073          	wfi
+      64:	bff5                	j	60 <_start+0x60>
+
+00000066 <main>:
+      66:	7119                	addi	sp,sp,-128
+      68:	de86                	sw	ra,124(sp)
+      6a:	080010ef          	jal	10ea <litex_get_sdio_ops>
+      6e:	2f19                	jal	784 <cyw_init>
+      70:	c501                	beqz	a0,78 <main+0x12>
+      72:	0d7000ef          	jal	948 <cyw_deinit>
+      76:	a001                	j	76 <main+0x10>
+      78:	0808                	addi	a0,sp,16
+      7a:	181000ef          	jal	9fa <cyw_get_chip_info>
+      7e:	4008a6b7          	lui	a3,0x4008a
+      82:	40087637          	lui	a2,0x40087
+      86:	400875b7          	lui	a1,0x40087
+      8a:	40000537          	lui	a0,0x40000
+      8e:	85460613          	addi	a2,a2,-1964 # 40086854 <_binary_cyfmac55500_sdio_bin_end>
+      92:	00050513          	mv	a0,a0
+      96:	95968693          	addi	a3,a3,-1703 # 40089959 <_binary_cyfmac55500_sdio_txt_end>
+      9a:	85458593          	addi	a1,a1,-1964 # 40086854 <_binary_cyfmac55500_sdio_bin_end>
+      9e:	8e91                	sub	a3,a3,a2
+      a0:	8d89                	sub	a1,a1,a0
+      a2:	2e3d                	jal	3e0 <cyw_load_firmware>
+      a4:	177000ef          	jal	a1a <cyw_get_state>
+      a8:	4789                	li	a5,2
+      aa:	00a7f563          	bgeu	a5,a0,b4 <main+0x4e>
+      ae:	11d000ef          	jal	9ca <cyw_up>
+      b2:	f161                	bnez	a0,72 <main+0xc>
+      b4:	dca2                	sw	s0,120(sp)
+      b6:	165000ef          	jal	a1a <cyw_get_state>
+      ba:	478d                	li	a5,3
+      bc:	02a7e263          	bltu	a5,a0,e0 <main+0x7a>
+      c0:	6461                	lui	s0,0x18
+      c2:	69f40413          	addi	s0,s0,1695 # 1869f <_binary_cyfmac55500_sdio_txt_size+0x1559a>
+      c6:	15f000ef          	jal	a24 <cyw_poll>
+      ca:	d802                	sw	zero,48(sp)
+      cc:	57c2                	lw	a5,48(sp)
+      ce:	fef44ce3          	blt	s0,a5,c6 <main+0x60>
+      d2:	57c2                	lw	a5,48(sp)
+      d4:	0785                	addi	a5,a5,1
+      d6:	d83e                	sw	a5,48(sp)
+      d8:	57c2                	lw	a5,48(sp)
+      da:	fef45ce3          	bge	s0,a5,d2 <main+0x6c>
+      de:	b7e5                	j	c6 <main+0x60>
+      e0:	6505                	lui	a0,0x1
+      e2:	4681                	li	a3,0
+      e4:	858a                	mv	a1,sp
+      e6:	4619                	li	a2,6
+      e8:	13850513          	addi	a0,a0,312 # 1138 <_frodata>
+      ec:	23dd                	jal	6d2 <cyw_iovar>
+      ee:	1808                	addi	a0,sp,48
+      f0:	04000613          	li	a2,64
+      f4:	4581                	li	a1,0
+      f6:	7fd000ef          	jal	10f2 <memset>
+      fa:	6505                	lui	a0,0x1
+      fc:	180c                	addi	a1,sp,48
+      fe:	4681                	li	a3,0
+     100:	03f00613          	li	a2,63
+     104:	14850513          	addi	a0,a0,328 # 1148 <_frodata+0x10>
+     108:	23e9                	jal	6d2 <cyw_iovar>
+     10a:	6505                	lui	a0,0x1
+     10c:	6799                	lui	a5,0x6
+     10e:	a4b78793          	addi	a5,a5,-1461 # 5a4b <_binary_cyfmac55500_sdio_txt_size+0x2946>
+     112:	002c                	addi	a1,sp,8
+     114:	4685                	li	a3,1
+     116:	4621                	li	a2,8
+     118:	14c50513          	addi	a0,a0,332 # 114c <_frodata+0x14>
+     11c:	c43e                	sw	a5,8(sp)
+     11e:	c602                	sw	zero,12(sp)
+     120:	2b4d                	jal	6d2 <cyw_iovar>
+     122:	bf79                	j	c0 <main+0x5a>
+
+00000124 <recv_sdpcm_frame>:
+     124:	7139                	addi	sp,sp,-64
+     126:	da26                	sw	s1,52(sp)
+     128:	100004b7          	lui	s1,0x10000
+     12c:	dc22                	sw	s0,56(sp)
+     12e:	00048493          	mv	s1,s1
+     132:	6405                	lui	s0,0x1
+     134:	9426                	add	s0,s0,s1
+     136:	503c                	lw	a5,96(s0)
+     138:	de06                	sw	ra,60(sp)
+     13a:	cbe1                	beqz	a5,20a <recv_sdpcm_frame+0xe6>
+     13c:	4b9c                	lw	a5,16(a5)
+     13e:	c7f1                	beqz	a5,20a <recv_sdpcm_frame+0xe6>
+     140:	d84a                	sw	s2,48(sp)
+     142:	d64e                	sw	s3,44(sp)
+     144:	d452                	sw	s4,40(sp)
+     146:	89b2                	mv	s3,a2
+     148:	8a2e                	mv	s4,a1
+     14a:	892a                	mv	s2,a0
+     14c:	4705                	li	a4,1
+     14e:	4691                	li	a3,4
+     150:	0870                	addi	a2,sp,28
+     152:	4581                	li	a1,0
+     154:	4509                	li	a0,2
+     156:	9782                	jalr	a5
+     158:	e95d                	bnez	a0,20e <recv_sdpcm_frame+0xea>
+     15a:	01c15683          	lhu	a3,28(sp)
+     15e:	7ff00713          	li	a4,2047
+     162:	fff68793          	addi	a5,a3,-1
+     166:	07c2                	slli	a5,a5,0x10
+     168:	83c1                	srli	a5,a5,0x10
+     16a:	08f76d63          	bltu	a4,a5,204 <recv_sdpcm_frame+0xe0>
+     16e:	503c                	lw	a5,96(s0)
+     170:	cbd1                	beqz	a5,204 <recv_sdpcm_frame+0xe0>
+     172:	4b9c                	lw	a5,16(a5)
+     174:	cbc1                	beqz	a5,204 <recv_sdpcm_frame+0xe0>
+     176:	10001837          	lui	a6,0x10001
+     17a:	86080613          	addi	a2,a6,-1952 # 10000860 <__global_pointer$+0x60>
+     17e:	4705                	li	a4,1
+     180:	4581                	li	a1,0
+     182:	4509                	li	a0,2
+     184:	9782                	jalr	a5
+     186:	87aa                	mv	a5,a0
+     188:	e159                	bnez	a0,20e <recv_sdpcm_frame+0xea>
+     18a:	86045683          	lhu	a3,-1952(s0) # 860 <cyw_init+0xdc>
+     18e:	86245603          	lhu	a2,-1950(s0)
+     192:	6741                	lui	a4,0x10
+     194:	177d                	addi	a4,a4,-1 # ffff <_binary_cyfmac55500_sdio_txt_size+0xcefa>
+     196:	8eb1                	xor	a3,a3,a2
+     198:	06e69663          	bne	a3,a4,204 <recv_sdpcm_frame+0xe0>
+     19c:	86844583          	lbu	a1,-1944(s0)
+     1a0:	86944603          	lbu	a2,-1943(s0)
+     1a4:	86444683          	lbu	a3,-1948(s0)
+     1a8:	86544703          	lbu	a4,-1947(s0)
+     1ac:	04b48e23          	sb	a1,92(s1) # 1000005c <g_cyw_dev+0x5c>
+     1b0:	04c48da3          	sb	a2,91(s1)
+     1b4:	04d48d23          	sb	a3,90(s1)
+     1b8:	00e90023          	sb	a4,0(s2)
+     1bc:	86744583          	lbu	a1,-1945(s0)
+     1c0:	86045603          	lhu	a2,-1952(s0)
+     1c4:	10001837          	lui	a6,0x10001
+     1c8:	8e0d                	sub	a2,a2,a1
+     1ca:	00c9a023          	sw	a2,0(s3)
+     1ce:	ea11                	bnez	a2,1e2 <recv_sdpcm_frame+0xbe>
+     1d0:	5942                	lw	s2,48(sp)
+     1d2:	59b2                	lw	s3,44(sp)
+     1d4:	5a22                	lw	s4,40(sp)
+     1d6:	50f2                	lw	ra,60(sp)
+     1d8:	5462                	lw	s0,56(sp)
+     1da:	54d2                	lw	s1,52(sp)
+     1dc:	853e                	mv	a0,a5
+     1de:	6121                	addi	sp,sp,64
+     1e0:	8082                	ret
+     1e2:	86080813          	addi	a6,a6,-1952 # 10000860 <__global_pointer$+0x60>
+     1e6:	c62a                	sw	a0,12(sp)
+     1e8:	95c2                	add	a1,a1,a6
+     1ea:	8552                	mv	a0,s4
+     1ec:	71b000ef          	jal	1106 <memcpy>
+     1f0:	47b2                	lw	a5,12(sp)
+     1f2:	50f2                	lw	ra,60(sp)
+     1f4:	5462                	lw	s0,56(sp)
+     1f6:	5942                	lw	s2,48(sp)
+     1f8:	59b2                	lw	s3,44(sp)
+     1fa:	5a22                	lw	s4,40(sp)
+     1fc:	54d2                	lw	s1,52(sp)
+     1fe:	853e                	mv	a0,a5
+     200:	6121                	addi	sp,sp,64
+     202:	8082                	ret
+     204:	5942                	lw	s2,48(sp)
+     206:	59b2                	lw	s3,44(sp)
+     208:	5a22                	lw	s4,40(sp)
+     20a:	57f5                	li	a5,-3
+     20c:	b7e9                	j	1d6 <recv_sdpcm_frame+0xb2>
+     20e:	5942                	lw	s2,48(sp)
+     210:	59b2                	lw	s3,44(sp)
+     212:	5a22                	lw	s4,40(sp)
+     214:	57e9                	li	a5,-6
+     216:	b7c1                	j	1d6 <recv_sdpcm_frame+0xb2>
+
+00000218 <set_backplane_window>:
+     218:	1141                	addi	sp,sp,-16
+     21a:	c422                	sw	s0,8(sp)
+     21c:	10000437          	lui	s0,0x10000
+     220:	00040413          	mv	s0,s0
+     224:	05844783          	lbu	a5,88(s0) # 10000058 <g_cyw_dev+0x58>
+     228:	c226                	sw	s1,4(sp)
+     22a:	7761                	lui	a4,0xffff8
+     22c:	c606                	sw	ra,12(sp)
+     22e:	00e574b3          	and	s1,a0,a4
+     232:	c781                	beqz	a5,23a <set_backplane_window+0x22>
+     234:	487c                	lw	a5,84(s0)
+     236:	06978263          	beq	a5,s1,29a <set_backplane_window+0x82>
+     23a:	c04a                	sw	s2,0(sp)
+     23c:	6905                	lui	s2,0x1
+     23e:	9922                	add	s2,s2,s0
+     240:	06092783          	lw	a5,96(s2) # 1060 <litex_sdio_init+0xbe>
+     244:	c7a5                	beqz	a5,2ac <set_backplane_window+0x94>
+     246:	47dc                	lw	a5,12(a5)
+     248:	c3b5                	beqz	a5,2ac <set_backplane_window+0x94>
+     24a:	0084d613          	srli	a2,s1,0x8
+     24e:	65c1                	lui	a1,0x10
+     250:	08067613          	andi	a2,a2,128
+     254:	05a9                	addi	a1,a1,10 # 1000a <_binary_cyfmac55500_sdio_txt_size+0xcf05>
+     256:	4505                	li	a0,1
+     258:	9782                	jalr	a5
+     25a:	e531                	bnez	a0,2a6 <set_backplane_window+0x8e>
+     25c:	06092783          	lw	a5,96(s2)
+     260:	c7b1                	beqz	a5,2ac <set_backplane_window+0x94>
+     262:	47dc                	lw	a5,12(a5)
+     264:	c7a1                	beqz	a5,2ac <set_backplane_window+0x94>
+     266:	0104d613          	srli	a2,s1,0x10
+     26a:	65c1                	lui	a1,0x10
+     26c:	0ff67613          	zext.b	a2,a2
+     270:	05ad                	addi	a1,a1,11 # 1000b <_binary_cyfmac55500_sdio_txt_size+0xcf06>
+     272:	4505                	li	a0,1
+     274:	9782                	jalr	a5
+     276:	e905                	bnez	a0,2a6 <set_backplane_window+0x8e>
+     278:	06092783          	lw	a5,96(s2)
+     27c:	cb85                	beqz	a5,2ac <set_backplane_window+0x94>
+     27e:	47dc                	lw	a5,12(a5)
+     280:	c795                	beqz	a5,2ac <set_backplane_window+0x94>
+     282:	65c1                	lui	a1,0x10
+     284:	05b1                	addi	a1,a1,12 # 1000c <_binary_cyfmac55500_sdio_txt_size+0xcf07>
+     286:	0184d613          	srli	a2,s1,0x18
+     28a:	4505                	li	a0,1
+     28c:	9782                	jalr	a5
+     28e:	ed01                	bnez	a0,2a6 <set_backplane_window+0x8e>
+     290:	4902                	lw	s2,0(sp)
+     292:	4785                	li	a5,1
+     294:	c864                	sw	s1,84(s0)
+     296:	04f40c23          	sb	a5,88(s0)
+     29a:	4501                	li	a0,0
+     29c:	40b2                	lw	ra,12(sp)
+     29e:	4422                	lw	s0,8(sp)
+     2a0:	4492                	lw	s1,4(sp)
+     2a2:	0141                	addi	sp,sp,16
+     2a4:	8082                	ret
+     2a6:	4902                	lw	s2,0(sp)
+     2a8:	5569                	li	a0,-6
+     2aa:	bfcd                	j	29c <set_backplane_window+0x84>
+     2ac:	4902                	lw	s2,0(sp)
+     2ae:	5575                	li	a0,-3
+     2b0:	b7f5                	j	29c <set_backplane_window+0x84>
+
+000002b2 <cyw_sdio_read32>:
+     2b2:	1101                	addi	sp,sp,-32
+     2b4:	cc22                	sw	s0,24(sp)
+     2b6:	ca26                	sw	s1,20(sp)
+     2b8:	ce06                	sw	ra,28(sp)
+     2ba:	84ae                	mv	s1,a1
+     2bc:	842a                	mv	s0,a0
+     2be:	3fa9                	jal	218 <set_backplane_window>
+     2c0:	c511                	beqz	a0,2cc <cyw_sdio_read32+0x1a>
+     2c2:	40f2                	lw	ra,28(sp)
+     2c4:	4462                	lw	s0,24(sp)
+     2c6:	44d2                	lw	s1,20(sp)
+     2c8:	6105                	addi	sp,sp,32
+     2ca:	8082                	ret
+     2cc:	100017b7          	lui	a5,0x10001
+     2d0:	0607a783          	lw	a5,96(a5) # 10001060 <__global_pointer$+0x860>
+     2d4:	c79d                	beqz	a5,302 <cyw_sdio_read32+0x50>
+     2d6:	4b9c                	lw	a5,16(a5)
+     2d8:	c78d                	beqz	a5,302 <cyw_sdio_read32+0x50>
+     2da:	01041593          	slli	a1,s0,0x10
+     2de:	66a1                	lui	a3,0x8
+     2e0:	81c1                	srli	a1,a1,0x10
+     2e2:	4705                	li	a4,1
+     2e4:	8dd5                	or	a1,a1,a3
+     2e6:	853a                	mv	a0,a4
+     2e8:	4691                	li	a3,4
+     2ea:	0070                	addi	a2,sp,12
+     2ec:	9782                	jalr	a5
+     2ee:	e901                	bnez	a0,2fe <cyw_sdio_read32+0x4c>
+     2f0:	47b2                	lw	a5,12(sp)
+     2f2:	40f2                	lw	ra,28(sp)
+     2f4:	4462                	lw	s0,24(sp)
+     2f6:	c09c                	sw	a5,0(s1)
+     2f8:	44d2                	lw	s1,20(sp)
+     2fa:	6105                	addi	sp,sp,32
+     2fc:	8082                	ret
+     2fe:	5569                	li	a0,-6
+     300:	b7c9                	j	2c2 <cyw_sdio_read32+0x10>
+     302:	5575                	li	a0,-3
+     304:	bf7d                	j	2c2 <cyw_sdio_read32+0x10>
+
+00000306 <cyw_sdio_write32>:
+     306:	1101                	addi	sp,sp,-32
+     308:	cc22                	sw	s0,24(sp)
+     30a:	ca26                	sw	s1,20(sp)
+     30c:	ce06                	sw	ra,28(sp)
+     30e:	842e                	mv	s0,a1
+     310:	84aa                	mv	s1,a0
+     312:	3719                	jal	218 <set_backplane_window>
+     314:	c511                	beqz	a0,320 <cyw_sdio_write32+0x1a>
+     316:	40f2                	lw	ra,28(sp)
+     318:	4462                	lw	s0,24(sp)
+     31a:	44d2                	lw	s1,20(sp)
+     31c:	6105                	addi	sp,sp,32
+     31e:	8082                	ret
+     320:	100017b7          	lui	a5,0x10001
+     324:	0607a783          	lw	a5,96(a5) # 10001060 <__global_pointer$+0x860>
+     328:	c622                	sw	s0,12(sp)
+     32a:	c385                	beqz	a5,34a <cyw_sdio_write32+0x44>
+     32c:	4bdc                	lw	a5,20(a5)
+     32e:	cf91                	beqz	a5,34a <cyw_sdio_write32+0x44>
+     330:	01049593          	slli	a1,s1,0x10
+     334:	66a1                	lui	a3,0x8
+     336:	81c1                	srli	a1,a1,0x10
+     338:	4705                	li	a4,1
+     33a:	8dd5                	or	a1,a1,a3
+     33c:	853a                	mv	a0,a4
+     33e:	4691                	li	a3,4
+     340:	0070                	addi	a2,sp,12
+     342:	9782                	jalr	a5
+     344:	d969                	beqz	a0,316 <cyw_sdio_write32+0x10>
+     346:	5569                	li	a0,-6
+     348:	b7f9                	j	316 <cyw_sdio_write32+0x10>
+     34a:	5575                	li	a0,-3
+     34c:	b7e9                	j	316 <cyw_sdio_write32+0x10>
+
+0000034e <cyw_backplane_write>:
+     34e:	c651                	beqz	a2,3da <cyw_backplane_write+0x8c>
+     350:	7179                	addi	sp,sp,-48
+     352:	ca56                	sw	s5,20(sp)
+     354:	c85a                	sw	s6,16(sp)
+     356:	6aa1                	lui	s5,0x8
+     358:	10001b37          	lui	s6,0x10001
+     35c:	d226                	sw	s1,36(sp)
+     35e:	d04a                	sw	s2,32(sp)
+     360:	cc52                	sw	s4,24(sp)
+     362:	c65e                	sw	s7,12(sp)
+     364:	d606                	sw	ra,44(sp)
+     366:	d422                	sw	s0,40(sp)
+     368:	ce4e                	sw	s3,28(sp)
+     36a:	84b2                	mv	s1,a2
+     36c:	892a                	mv	s2,a0
+     36e:	8a2e                	mv	s4,a1
+     370:	fffa8b93          	addi	s7,s5,-1 # 7fff <_binary_cyfmac55500_sdio_txt_size+0x4efa>
+     374:	000b0b13          	mv	s6,s6
+     378:	a821                	j	390 <cyw_backplane_write+0x42>
+     37a:	060b2783          	lw	a5,96(s6) # 10001060 <__global_pointer$+0x860>
+     37e:	cfa1                	beqz	a5,3d6 <cyw_backplane_write+0x88>
+     380:	4bdc                	lw	a5,20(a5)
+     382:	cbb1                	beqz	a5,3d6 <cyw_backplane_write+0x88>
+     384:	9782                	jalr	a5
+     386:	8c81                	sub	s1,s1,s0
+     388:	e529                	bnez	a0,3d2 <cyw_backplane_write+0x84>
+     38a:	9922                	add	s2,s2,s0
+     38c:	9a22                	add	s4,s4,s0
+     38e:	c0a1                	beqz	s1,3ce <cyw_backplane_write+0x80>
+     390:	017979b3          	and	s3,s2,s7
+     394:	009987b3          	add	a5,s3,s1
+     398:	854a                	mv	a0,s2
+     39a:	8426                	mv	s0,s1
+     39c:	00faf463          	bgeu	s5,a5,3a4 <cyw_backplane_write+0x56>
+     3a0:	413a8433          	sub	s0,s5,s3
+     3a4:	3d95                	jal	218 <set_backplane_window>
+     3a6:	87aa                	mv	a5,a0
+     3a8:	4705                	li	a4,1
+     3aa:	86a2                	mv	a3,s0
+     3ac:	8652                	mv	a2,s4
+     3ae:	0159e5b3          	or	a1,s3,s5
+     3b2:	853a                	mv	a0,a4
+     3b4:	d3f9                	beqz	a5,37a <cyw_backplane_write+0x2c>
+     3b6:	50b2                	lw	ra,44(sp)
+     3b8:	5422                	lw	s0,40(sp)
+     3ba:	5492                	lw	s1,36(sp)
+     3bc:	5902                	lw	s2,32(sp)
+     3be:	49f2                	lw	s3,28(sp)
+     3c0:	4a62                	lw	s4,24(sp)
+     3c2:	4ad2                	lw	s5,20(sp)
+     3c4:	4b42                	lw	s6,16(sp)
+     3c6:	4bb2                	lw	s7,12(sp)
+     3c8:	853e                	mv	a0,a5
+     3ca:	6145                	addi	sp,sp,48
+     3cc:	8082                	ret
+     3ce:	4781                	li	a5,0
+     3d0:	b7dd                	j	3b6 <cyw_backplane_write+0x68>
+     3d2:	57e9                	li	a5,-6
+     3d4:	b7cd                	j	3b6 <cyw_backplane_write+0x68>
+     3d6:	57f5                	li	a5,-3
+     3d8:	bff9                	j	3b6 <cyw_backplane_write+0x68>
+     3da:	4781                	li	a5,0
+     3dc:	853e                	mv	a0,a5
+     3de:	8082                	ret
+
+000003e0 <cyw_load_firmware>:
+     3e0:	7139                	addi	sp,sp,-64
+     3e2:	dc22                	sw	s0,56(sp)
+     3e4:	10000437          	lui	s0,0x10000
+     3e8:	00040413          	mv	s0,s0
+     3ec:	401c                	lw	a5,0(s0)
+     3ee:	de06                	sw	ra,60(sp)
+     3f0:	14078d63          	beqz	a5,54a <cyw_load_firmware+0x16a>
+     3f4:	d64e                	sw	s3,44(sp)
+     3f6:	89aa                	mv	s3,a0
+     3f8:	4028                	lw	a0,64(s0)
+     3fa:	da26                	sw	s1,52(sp)
+     3fc:	d84a                	sw	s2,48(sp)
+     3fe:	d452                	sw	s4,40(sp)
+     400:	4789                	li	a5,2
+     402:	8a2e                	mv	s4,a1
+     404:	04050513          	addi	a0,a0,64
+     408:	4581                	li	a1,0
+     40a:	c01c                	sw	a5,0(s0)
+     40c:	84b6                	mv	s1,a3
+     40e:	8932                	mv	s2,a2
+     410:	3ddd                	jal	306 <cyw_sdio_write32>
+     412:	87aa                	mv	a5,a0
+     414:	cd01                	beqz	a0,42c <cyw_load_firmware+0x4c>
+     416:	4715                	li	a4,5
+     418:	54d2                	lw	s1,52(sp)
+     41a:	5942                	lw	s2,48(sp)
+     41c:	59b2                	lw	s3,44(sp)
+     41e:	5a22                	lw	s4,40(sp)
+     420:	c018                	sw	a4,0(s0)
+     422:	50f2                	lw	ra,60(sp)
+     424:	5462                	lw	s0,56(sp)
+     426:	853e                	mv	a0,a5
+     428:	6121                	addi	sp,sp,64
+     42a:	8082                	ret
+     42c:	4808                	lw	a0,16(s0)
+     42e:	8652                	mv	a2,s4
+     430:	85ce                	mv	a1,s3
+     432:	3f31                	jal	34e <cyw_backplane_write>
+     434:	87aa                	mv	a5,a0
+     436:	f165                	bnez	a0,416 <cyw_load_firmware+0x36>
+     438:	02090663          	beqz	s2,464 <cyw_load_firmware+0x84>
+     43c:	c485                	beqz	s1,464 <cyw_load_firmware+0x84>
+     43e:	85ca                	mv	a1,s2
+     440:	8626                	mv	a2,s1
+     442:	00080537          	lui	a0,0x80
+     446:	3721                	jal	34e <cyw_backplane_write>
+     448:	87aa                	mv	a5,a0
+     44a:	f571                	bnez	a0,416 <cyw_load_firmware+0x36>
+     44c:	0024d593          	srli	a1,s1,0x2
+     450:	fff5c793          	not	a5,a1
+     454:	07c2                	slli	a5,a5,0x10
+     456:	00080537          	lui	a0,0x80
+     45a:	8ddd                	or	a1,a1,a5
+     45c:	9526                	add	a0,a0,s1
+     45e:	3565                	jal	306 <cyw_sdio_write32>
+     460:	87aa                	mv	a5,a0
+     462:	f955                	bnez	a0,416 <cyw_load_firmware+0x36>
+     464:	4038                	lw	a4,64(s0)
+     466:	4585                	li	a1,1
+     468:	6905                	lui	s2,0x1
+     46a:	7ff70493          	addi	s1,a4,2047 # ffff87ff <_firmware_end+0xbff6ee9f>
+     46e:	94ae                	add	s1,s1,a1
+     470:	8526                	mv	a0,s1
+     472:	c63a                	sw	a4,12(sp)
+     474:	3d49                	jal	306 <cyw_sdio_write32>
+     476:	87aa                	mv	a5,a0
+     478:	fd59                	bnez	a0,416 <cyw_load_firmware+0x36>
+     47a:	9922                	add	s2,s2,s0
+     47c:	06092783          	lw	a5,96(s2) # 1060 <litex_sdio_init+0xbe>
+     480:	4732                	lw	a4,12(sp)
+     482:	c791                	beqz	a5,48e <cyw_load_firmware+0xae>
+     484:	579c                	lw	a5,40(a5)
+     486:	c781                	beqz	a5,48e <cyw_load_firmware+0xae>
+     488:	4529                	li	a0,10
+     48a:	9782                	jalr	a5
+     48c:	4732                	lw	a4,12(sp)
+     48e:	40870993          	addi	s3,a4,1032
+     492:	854e                	mv	a0,s3
+     494:	4585                	li	a1,1
+     496:	3d85                	jal	306 <cyw_sdio_write32>
+     498:	87aa                	mv	a5,a0
+     49a:	fd35                	bnez	a0,416 <cyw_load_firmware+0x36>
+     49c:	06092783          	lw	a5,96(s2)
+     4a0:	c789                	beqz	a5,4aa <cyw_load_firmware+0xca>
+     4a2:	579c                	lw	a5,40(a5)
+     4a4:	c399                	beqz	a5,4aa <cyw_load_firmware+0xca>
+     4a6:	4529                	li	a0,10
+     4a8:	9782                	jalr	a5
+     4aa:	8526                	mv	a0,s1
+     4ac:	4581                	li	a1,0
+     4ae:	3da1                	jal	306 <cyw_sdio_write32>
+     4b0:	87aa                	mv	a5,a0
+     4b2:	f135                	bnez	a0,416 <cyw_load_firmware+0x36>
+     4b4:	06092783          	lw	a5,96(s2)
+     4b8:	c789                	beqz	a5,4c2 <cyw_load_firmware+0xe2>
+     4ba:	579c                	lw	a5,40(a5)
+     4bc:	c399                	beqz	a5,4c2 <cyw_load_firmware+0xe2>
+     4be:	4529                	li	a0,10
+     4c0:	9782                	jalr	a5
+     4c2:	854e                	mv	a0,s3
+     4c4:	4585                	li	a1,1
+     4c6:	3581                	jal	306 <cyw_sdio_write32>
+     4c8:	87aa                	mv	a5,a0
+     4ca:	f531                	bnez	a0,416 <cyw_load_firmware+0x36>
+     4cc:	06092783          	lw	a5,96(s2)
+     4d0:	c799                	beqz	a5,4de <cyw_load_firmware+0xfe>
+     4d2:	5798                	lw	a4,40(a5)
+     4d4:	c709                	beqz	a4,4de <cyw_load_firmware+0xfe>
+     4d6:	4529                	li	a0,10
+     4d8:	9702                	jalr	a4
+     4da:	06092783          	lw	a5,96(s2)
+     4de:	0c700493          	li	s1,199
+     4e2:	65c1                	lui	a1,0x10
+     4e4:	0870                	addi	a2,sp,28
+     4e6:	05b9                	addi	a1,a1,14 # 1000e <_binary_cyfmac55500_sdio_txt_size+0xcf09>
+     4e8:	4505                	li	a0,1
+     4ea:	c385                	beqz	a5,50a <cyw_load_firmware+0x12a>
+     4ec:	4798                	lw	a4,8(a5)
+     4ee:	cb11                	beqz	a4,502 <cyw_load_firmware+0x122>
+     4f0:	9702                	jalr	a4
+     4f2:	e509                	bnez	a0,4fc <cyw_load_firmware+0x11c>
+     4f4:	01c10783          	lb	a5,28(sp)
+     4f8:	0007ce63          	bltz	a5,514 <cyw_load_firmware+0x134>
+     4fc:	06092783          	lw	a5,96(s2)
+     500:	c789                	beqz	a5,50a <cyw_load_firmware+0x12a>
+     502:	57dc                	lw	a5,44(a5)
+     504:	4529                	li	a0,10
+     506:	c391                	beqz	a5,50a <cyw_load_firmware+0x12a>
+     508:	9782                	jalr	a5
+     50a:	cc95                	beqz	s1,546 <cyw_load_firmware+0x166>
+     50c:	06092783          	lw	a5,96(s2)
+     510:	14fd                	addi	s1,s1,-1
+     512:	bfc1                	j	4e2 <cyw_load_firmware+0x102>
+     514:	c88d                	beqz	s1,546 <cyw_load_firmware+0x166>
+     516:	06400493          	li	s1,100
+     51a:	a821                	j	532 <cyw_load_firmware+0x152>
+     51c:	4772                	lw	a4,28(sp)
+     51e:	8b21                	andi	a4,a4,8
+     520:	e30d                	bnez	a4,542 <cyw_load_firmware+0x162>
+     522:	06092783          	lw	a5,96(s2)
+     526:	c781                	beqz	a5,52e <cyw_load_firmware+0x14e>
+     528:	57dc                	lw	a5,44(a5)
+     52a:	c391                	beqz	a5,52e <cyw_load_firmware+0x14e>
+     52c:	9782                	jalr	a5
+     52e:	14fd                	addi	s1,s1,-1
+     530:	cc99                	beqz	s1,54e <cyw_load_firmware+0x16e>
+     532:	086c                	addi	a1,sp,28
+     534:	04c00513          	li	a0,76
+     538:	3bad                	jal	2b2 <cyw_sdio_read32>
+     53a:	87aa                	mv	a5,a0
+     53c:	4529                	li	a0,10
+     53e:	dff9                	beqz	a5,51c <cyw_load_firmware+0x13c>
+     540:	bdd9                	j	416 <cyw_load_firmware+0x36>
+     542:	470d                	li	a4,3
+     544:	bdd1                	j	418 <cyw_load_firmware+0x38>
+     546:	57f9                	li	a5,-2
+     548:	b5f9                	j	416 <cyw_load_firmware+0x36>
+     54a:	57e1                	li	a5,-8
+     54c:	bdd9                	j	422 <cyw_load_firmware+0x42>
+     54e:	57e5                	li	a5,-7
+     550:	b5d9                	j	416 <cyw_load_firmware+0x36>
+
+00000552 <cyw_ioctl>:
+     552:	dc010113          	addi	sp,sp,-576
+     556:	23212823          	sw	s2,560(sp)
+     55a:	10000937          	lui	s2,0x10000
+     55e:	00090913          	mv	s2,s2
+     562:	00092703          	lw	a4,0(s2) # 10000000 <g_cyw_dev>
+     566:	22112e23          	sw	ra,572(sp)
+     56a:	4789                	li	a5,2
+     56c:	14e7ff63          	bgeu	a5,a4,6ca <cyw_ioctl+0x178>
+     570:	05e95783          	lhu	a5,94(s2)
+     574:	23312623          	sw	s3,556(sp)
+     578:	23412423          	sw	s4,552(sp)
+     57c:	23512223          	sw	s5,548(sp)
+     580:	22812c23          	sw	s0,568(sp)
+     584:	22912a23          	sw	s1,564(sp)
+     588:	d02a                	sw	a0,32(sp)
+     58a:	d232                	sw	a2,36(sp)
+     58c:	01079713          	slli	a4,a5,0x10
+     590:	8aae                	mv	s5,a1
+     592:	89b2                	mv	s3,a2
+     594:	8a36                	mv	s4,a3
+     596:	0785                	addi	a5,a5,1
+     598:	0e069b63          	bnez	a3,68e <cyw_ioctl+0x13c>
+     59c:	02076713          	ori	a4,a4,32
+     5a0:	d43a                	sw	a4,40(sp)
+     5a2:	04f91f23          	sh	a5,94(s2)
+     5a6:	d602                	sw	zero,44(sp)
+     5a8:	10000437          	lui	s0,0x10000
+     5ac:	4631                	li	a2,12
+     5ae:	4581                	li	a1,0
+     5b0:	06040513          	addi	a0,s0,96 # 10000060 <g_cyw_dev+0x60>
+     5b4:	33f000ef          	jal	10f2 <memset>
+     5b8:	05994703          	lbu	a4,89(s2)
+     5bc:	01c98793          	addi	a5,s3,28
+     5c0:	07c2                	slli	a5,a5,0x10
+     5c2:	83c1                	srli	a5,a5,0x10
+     5c4:	46b1                	li	a3,12
+     5c6:	fff7c593          	not	a1,a5
+     5ca:	00170613          	addi	a2,a4,1
+     5ce:	01098493          	addi	s1,s3,16
+     5d2:	060902a3          	sb	zero,101(s2)
+     5d6:	06f91023          	sh	a5,96(s2)
+     5da:	06b91123          	sh	a1,98(s2)
+     5de:	06e90223          	sb	a4,100(s2)
+     5e2:	04c90ca3          	sb	a2,89(s2)
+     5e6:	06d903a3          	sb	a3,103(s2)
+     5ea:	ecdd                	bnez	s1,6a8 <cyw_ioctl+0x156>
+     5ec:	6485                	lui	s1,0x1
+     5ee:	94ca                	add	s1,s1,s2
+     5f0:	50bc                	lw	a5,96(s1)
+     5f2:	cff1                	beqz	a5,6ce <cyw_ioctl+0x17c>
+     5f4:	4bdc                	lw	a5,20(a5)
+     5f6:	cfe1                	beqz	a5,6ce <cyw_ioctl+0x17c>
+     5f8:	01f98693          	addi	a3,s3,31
+     5fc:	06040613          	addi	a2,s0,96
+     600:	9af1                	andi	a3,a3,-4
+     602:	4705                	li	a4,1
+     604:	4581                	li	a1,0
+     606:	4509                	li	a0,2
+     608:	9782                	jalr	a5
+     60a:	ed55                	bnez	a0,6c6 <cyw_ioctl+0x174>
+     60c:	06400413          	li	s0,100
+     610:	a801                	j	620 <cyw_ioctl+0xce>
+     612:	50bc                	lw	a5,96(s1)
+     614:	c781                	beqz	a5,61c <cyw_ioctl+0xca>
+     616:	57dc                	lw	a5,44(a5)
+     618:	c391                	beqz	a5,61c <cyw_ioctl+0xca>
+     61a:	9782                	jalr	a5
+     61c:	147d                	addi	s0,s0,-1
+     61e:	cc51                	beqz	s0,6ba <cyw_ioctl+0x168>
+     620:	0870                	addi	a2,sp,28
+     622:	100c                	addi	a1,sp,32
+     624:	01b10513          	addi	a0,sp,27
+     628:	3cf5                	jal	124 <recv_sdpcm_frame>
+     62a:	87aa                	mv	a5,a0
+     62c:	4505                	li	a0,1
+     62e:	f3f5                	bnez	a5,612 <cyw_ioctl+0xc0>
+     630:	01b14703          	lbu	a4,27(sp)
+     634:	ff79                	bnez	a4,612 <cyw_ioctl+0xc0>
+     636:	05e95703          	lhu	a4,94(s2)
+     63a:	02a15683          	lhu	a3,42(sp)
+     63e:	177d                	addi	a4,a4,-1
+     640:	fce699e3          	bne	a3,a4,612 <cyw_ioctl+0xc0>
+     644:	5732                	lw	a4,44(sp)
+     646:	ef25                	bnez	a4,6be <cyw_ioctl+0x16c>
+     648:	00aa4733          	xor	a4,s4,a0
+     64c:	015036b3          	snez	a3,s5
+     650:	8f75                	and	a4,a4,a3
+     652:	cf01                	beqz	a4,66a <cyw_ioctl+0x118>
+     654:	00098b63          	beqz	s3,66a <cyw_ioctl+0x118>
+     658:	5612                	lw	a2,36(sp)
+     65a:	06c9e463          	bltu	s3,a2,6c2 <cyw_ioctl+0x170>
+     65e:	8556                	mv	a0,s5
+     660:	180c                	addi	a1,sp,48
+     662:	c63e                	sw	a5,12(sp)
+     664:	2a3000ef          	jal	1106 <memcpy>
+     668:	47b2                	lw	a5,12(sp)
+     66a:	23812403          	lw	s0,568(sp)
+     66e:	23412483          	lw	s1,564(sp)
+     672:	22c12983          	lw	s3,556(sp)
+     676:	22812a03          	lw	s4,552(sp)
+     67a:	22412a83          	lw	s5,548(sp)
+     67e:	23c12083          	lw	ra,572(sp)
+     682:	23012903          	lw	s2,560(sp)
+     686:	853e                	mv	a0,a5
+     688:	24010113          	addi	sp,sp,576
+     68c:	8082                	ret
+     68e:	02276713          	ori	a4,a4,34
+     692:	d43a                	sw	a4,40(sp)
+     694:	04f91f23          	sh	a5,94(s2)
+     698:	d602                	sw	zero,44(sp)
+     69a:	d619                	beqz	a2,5a8 <cyw_ioctl+0x56>
+     69c:	f00586e3          	beqz	a1,5a8 <cyw_ioctl+0x56>
+     6a0:	1808                	addi	a0,sp,48
+     6a2:	265000ef          	jal	1106 <memcpy>
+     6a6:	b709                	j	5a8 <cyw_ioctl+0x56>
+     6a8:	10000537          	lui	a0,0x10000
+     6ac:	8626                	mv	a2,s1
+     6ae:	100c                	addi	a1,sp,32
+     6b0:	06c50513          	addi	a0,a0,108 # 1000006c <g_cyw_dev+0x6c>
+     6b4:	253000ef          	jal	1106 <memcpy>
+     6b8:	bf15                	j	5ec <cyw_ioctl+0x9a>
+     6ba:	57f9                	li	a5,-2
+     6bc:	b77d                	j	66a <cyw_ioctl+0x118>
+     6be:	57fd                	li	a5,-1
+     6c0:	b76d                	j	66a <cyw_ioctl+0x118>
+     6c2:	864e                	mv	a2,s3
+     6c4:	bf69                	j	65e <cyw_ioctl+0x10c>
+     6c6:	57e9                	li	a5,-6
+     6c8:	b74d                	j	66a <cyw_ioctl+0x118>
+     6ca:	57e1                	li	a5,-8
+     6cc:	bf4d                	j	67e <cyw_ioctl+0x12c>
+     6ce:	57f5                	li	a5,-3
+     6d0:	bf69                	j	66a <cyw_ioctl+0x118>
+
+000006d2 <cyw_iovar>:
+     6d2:	7169                	addi	sp,sp,-304
+     6d4:	12812423          	sw	s0,296(sp)
+     6d8:	12912223          	sw	s1,292(sp)
+     6dc:	13212023          	sw	s2,288(sp)
+     6e0:	84b2                	mv	s1,a2
+     6e2:	11312e23          	sw	s3,284(sp)
+     6e6:	11412c23          	sw	s4,280(sp)
+     6ea:	12112623          	sw	ra,300(sp)
+     6ee:	89ae                	mv	s3,a1
+     6f0:	8436                	mv	s0,a3
+     6f2:	8a2a                	mv	s4,a0
+     6f4:	22b000ef          	jal	111e <strlen>
+     6f8:	00150613          	addi	a2,a0,1
+     6fc:	00960933          	add	s2,a2,s1
+     700:	10000793          	li	a5,256
+     704:	0727ee63          	bltu	a5,s2,780 <cyw_iovar+0xae>
+     708:	85d2                	mv	a1,s4
+     70a:	0808                	addi	a0,sp,16
+     70c:	c432                	sw	a2,8(sp)
+     70e:	1f9000ef          	jal	1106 <memcpy>
+     712:	00144713          	xori	a4,s0,1
+     716:	10640793          	addi	a5,s0,262
+     71a:	c099                	beqz	s1,720 <cyw_iovar+0x4e>
+     71c:	02099763          	bnez	s3,74a <cyw_iovar+0x78>
+     720:	86a2                	mv	a3,s0
+     722:	864a                	mv	a2,s2
+     724:	080c                	addi	a1,sp,16
+     726:	853e                	mv	a0,a5
+     728:	352d                	jal	552 <cyw_ioctl>
+     72a:	842a                	mv	s0,a0
+     72c:	12c12083          	lw	ra,300(sp)
+     730:	8522                	mv	a0,s0
+     732:	12812403          	lw	s0,296(sp)
+     736:	12412483          	lw	s1,292(sp)
+     73a:	12012903          	lw	s2,288(sp)
+     73e:	11c12983          	lw	s3,284(sp)
+     742:	11812a03          	lw	s4,280(sp)
+     746:	6155                	addi	sp,sp,304
+     748:	8082                	ret
+     74a:	4622                	lw	a2,8(sp)
+     74c:	c63e                	sw	a5,12(sp)
+     74e:	85ce                	mv	a1,s3
+     750:	01060793          	addi	a5,a2,16
+     754:	00278a33          	add	s4,a5,sp
+     758:	8626                	mv	a2,s1
+     75a:	8552                	mv	a0,s4
+     75c:	c43a                	sw	a4,8(sp)
+     75e:	1a9000ef          	jal	1106 <memcpy>
+     762:	4532                	lw	a0,12(sp)
+     764:	86a2                	mv	a3,s0
+     766:	864a                	mv	a2,s2
+     768:	080c                	addi	a1,sp,16
+     76a:	33e5                	jal	552 <cyw_ioctl>
+     76c:	842a                	mv	s0,a0
+     76e:	fd5d                	bnez	a0,72c <cyw_iovar+0x5a>
+     770:	4722                	lw	a4,8(sp)
+     772:	df4d                	beqz	a4,72c <cyw_iovar+0x5a>
+     774:	8626                	mv	a2,s1
+     776:	85d2                	mv	a1,s4
+     778:	854e                	mv	a0,s3
+     77a:	18d000ef          	jal	1106 <memcpy>
+     77e:	b77d                	j	72c <cyw_iovar+0x5a>
+     780:	5471                	li	s0,-4
+     782:	b76d                	j	72c <cyw_iovar+0x5a>
+
+00000784 <cyw_init>:
+     784:	1c050063          	beqz	a0,944 <cyw_init+0x1c0>
+     788:	7179                	addi	sp,sp,-48
+     78a:	ce4e                	sw	s3,28(sp)
+     78c:	6605                	lui	a2,0x1
+     78e:	100009b7          	lui	s3,0x10000
+     792:	d422                	sw	s0,40(sp)
+     794:	06460613          	addi	a2,a2,100 # 1064 <litex_sdio_init+0xc2>
+     798:	842a                	mv	s0,a0
+     79a:	4581                	li	a1,0
+     79c:	00098513          	mv	a0,s3
+     7a0:	d226                	sw	s1,36(sp)
+     7a2:	d606                	sw	ra,44(sp)
+     7a4:	14f000ef          	jal	10f2 <memset>
+     7a8:	401c                	lw	a5,0(s0)
+     7aa:	00098993          	mv	s3,s3
+     7ae:	6485                	lui	s1,0x1
+     7b0:	94ce                	add	s1,s1,s3
+     7b2:	d0a0                	sw	s0,96(s1)
+     7b4:	0009a023          	sw	zero,0(s3) # 10000000 <g_cyw_dev>
+     7b8:	16078b63          	beqz	a5,92e <cyw_init+0x1aa>
+     7bc:	9782                	jalr	a5
+     7be:	18051163          	bnez	a0,940 <cyw_init+0x1bc>
+     7c2:	50a0                	lw	s0,96(s1)
+     7c4:	d04a                	sw	s2,32(sp)
+     7c6:	4c5c                	lw	a5,28(s0)
+     7c8:	c789                	beqz	a5,7d2 <cyw_init+0x4e>
+     7ca:	4585                	li	a1,1
+     7cc:	852e                	mv	a0,a1
+     7ce:	9782                	jalr	a5
+     7d0:	50a0                	lw	s0,96(s1)
+     7d2:	06300913          	li	s2,99
+     7d6:	00b10613          	addi	a2,sp,11
+     7da:	458d                	li	a1,3
+     7dc:	4501                	li	a0,0
+     7de:	cc19                	beqz	s0,7fc <cyw_init+0x78>
+     7e0:	441c                	lw	a5,8(s0)
+     7e2:	cb89                	beqz	a5,7f4 <cyw_init+0x70>
+     7e4:	9782                	jalr	a5
+     7e6:	e509                	bnez	a0,7f0 <cyw_init+0x6c>
+     7e8:	00b14783          	lbu	a5,11(sp)
+     7ec:	8b89                	andi	a5,a5,2
+     7ee:	ef81                	bnez	a5,806 <cyw_init+0x82>
+     7f0:	50a0                	lw	s0,96(s1)
+     7f2:	c409                	beqz	s0,7fc <cyw_init+0x78>
+     7f4:	545c                	lw	a5,44(s0)
+     7f6:	4505                	li	a0,1
+     7f8:	c391                	beqz	a5,7fc <cyw_init+0x78>
+     7fa:	9782                	jalr	a5
+     7fc:	12090b63          	beqz	s2,932 <cyw_init+0x1ae>
+     800:	50a0                	lw	s0,96(s1)
+     802:	197d                	addi	s2,s2,-1
+     804:	bfc9                	j	7d6 <cyw_init+0x52>
+     806:	12090663          	beqz	s2,932 <cyw_init+0x1ae>
+     80a:	50bc                	lw	a5,96(s1)
+     80c:	4f98                	lw	a4,24(a5)
+     80e:	cf11                	beqz	a4,82a <cyw_init+0xa6>
+     810:	04000593          	li	a1,64
+     814:	4505                	li	a0,1
+     816:	9702                	jalr	a4
+     818:	50bc                	lw	a5,96(s1)
+     81a:	20000593          	li	a1,512
+     81e:	4509                	li	a0,2
+     820:	4f9c                	lw	a5,24(a5)
+     822:	9782                	jalr	a5
+     824:	50bc                	lw	a5,96(s1)
+     826:	10078963          	beqz	a5,938 <cyw_init+0x1b4>
+     82a:	47dc                	lw	a5,12(a5)
+     82c:	10078663          	beqz	a5,938 <cyw_init+0x1b4>
+     830:	65c1                	lui	a1,0x10
+     832:	05b9                	addi	a1,a1,14 # 1000e <_binary_cyfmac55500_sdio_txt_size+0xcf09>
+     834:	4621                	li	a2,8
+     836:	4505                	li	a0,1
+     838:	9782                	jalr	a5
+     83a:	06400413          	li	s0,100
+     83e:	c909                	beqz	a0,850 <cyw_init+0xcc>
+     840:	a04d                	j	8e2 <cyw_init+0x15e>
+     842:	50bc                	lw	a5,96(s1)
+     844:	c781                	beqz	a5,84c <cyw_init+0xc8>
+     846:	57dc                	lw	a5,44(a5)
+     848:	c391                	beqz	a5,84c <cyw_init+0xc8>
+     84a:	9782                	jalr	a5
+     84c:	147d                	addi	s0,s0,-1
+     84e:	c075                	beqz	s0,932 <cyw_init+0x1ae>
+     850:	50bc                	lw	a5,96(s1)
+     852:	65c1                	lui	a1,0x10
+     854:	0070                	addi	a2,sp,12
+     856:	05b9                	addi	a1,a1,14 # 1000e <_binary_cyfmac55500_sdio_txt_size+0xcf09>
+     858:	4505                	li	a0,1
+     85a:	cff9                	beqz	a5,938 <cyw_init+0x1b4>
+     85c:	479c                	lw	a5,8(a5)
+     85e:	cfe9                	beqz	a5,938 <cyw_init+0x1b4>
+     860:	9782                	jalr	a5
+     862:	87aa                	mv	a5,a0
+     864:	4505                	li	a0,1
+     866:	efb5                	bnez	a5,8e2 <cyw_init+0x15e>
+     868:	00c14783          	lbu	a5,12(sp)
+     86c:	0407f793          	andi	a5,a5,64
+     870:	dbe9                	beqz	a5,842 <cyw_init+0xbe>
+     872:	006c                	addi	a1,sp,12
+     874:	33000513          	li	a0,816
+     878:	3c2d                	jal	2b2 <cyw_sdio_read32>
+     87a:	e52d                	bnez	a0,8e4 <cyw_init+0x160>
+     87c:	47b2                	lw	a5,12(sp)
+     87e:	6739                	lui	a4,0xe
+     880:	8cc70713          	addi	a4,a4,-1844 # d8cc <_binary_cyfmac55500_sdio_txt_size+0xa7c7>
+     884:	01079693          	slli	a3,a5,0x10
+     888:	83c1                	srli	a5,a5,0x10
+     88a:	82c1                	srli	a3,a3,0x10
+     88c:	8bbd                	andi	a5,a5,15
+     88e:	00f9a423          	sw	a5,8(s3)
+     892:	00d9a223          	sw	a3,4(s3)
+     896:	0ae69163          	bne	a3,a4,938 <cyw_init+0x1b4>
+     89a:	50bc                	lw	a5,96(s1)
+     89c:	003a0737          	lui	a4,0x3a0
+     8a0:	00e9a823          	sw	a4,16(s3)
+     8a4:	4fd8                	lw	a4,28(a5)
+     8a6:	c709                	beqz	a4,8b0 <cyw_init+0x12c>
+     8a8:	4585                	li	a1,1
+     8aa:	4509                	li	a0,2
+     8ac:	9702                	jalr	a4
+     8ae:	50bc                	lw	a5,96(s1)
+     8b0:	06300413          	li	s0,99
+     8b4:	00b10613          	addi	a2,sp,11
+     8b8:	458d                	li	a1,3
+     8ba:	4501                	li	a0,0
+     8bc:	cf99                	beqz	a5,8da <cyw_init+0x156>
+     8be:	4798                	lw	a4,8(a5)
+     8c0:	cb09                	beqz	a4,8d2 <cyw_init+0x14e>
+     8c2:	9702                	jalr	a4
+     8c4:	e509                	bnez	a0,8ce <cyw_init+0x14a>
+     8c6:	00b14783          	lbu	a5,11(sp)
+     8ca:	8b91                	andi	a5,a5,4
+     8cc:	e39d                	bnez	a5,8f2 <cyw_init+0x16e>
+     8ce:	50bc                	lw	a5,96(s1)
+     8d0:	c789                	beqz	a5,8da <cyw_init+0x156>
+     8d2:	57dc                	lw	a5,44(a5)
+     8d4:	4505                	li	a0,1
+     8d6:	c391                	beqz	a5,8da <cyw_init+0x156>
+     8d8:	9782                	jalr	a5
+     8da:	cc21                	beqz	s0,932 <cyw_init+0x1ae>
+     8dc:	50bc                	lw	a5,96(s1)
+     8de:	147d                	addi	s0,s0,-1
+     8e0:	bfd1                	j	8b4 <cyw_init+0x130>
+     8e2:	5569                	li	a0,-6
+     8e4:	5902                	lw	s2,32(sp)
+     8e6:	50b2                	lw	ra,44(sp)
+     8e8:	5422                	lw	s0,40(sp)
+     8ea:	5492                	lw	s1,36(sp)
+     8ec:	49f2                	lw	s3,28(sp)
+     8ee:	6145                	addi	sp,sp,48
+     8f0:	8082                	ret
+     8f2:	c021                	beqz	s0,932 <cyw_init+0x1ae>
+     8f4:	50bc                	lw	a5,96(s1)
+     8f6:	c3a9                	beqz	a5,938 <cyw_init+0x1b4>
+     8f8:	47dc                	lw	a5,12(a5)
+     8fa:	cf9d                	beqz	a5,938 <cyw_init+0x1b4>
+     8fc:	65c1                	lui	a1,0x10
+     8fe:	05a1                	addi	a1,a1,8 # 10008 <_binary_cyfmac55500_sdio_txt_size+0xcf03>
+     900:	04000613          	li	a2,64
+     904:	4505                	li	a0,1
+     906:	9782                	jalr	a5
+     908:	fd69                	bnez	a0,8e2 <cyw_init+0x15e>
+     90a:	50bc                	lw	a5,96(s1)
+     90c:	c795                	beqz	a5,938 <cyw_init+0x1b4>
+     90e:	47dc                	lw	a5,12(a5)
+     910:	c785                	beqz	a5,938 <cyw_init+0x1b4>
+     912:	461d                	li	a2,7
+     914:	4591                	li	a1,4
+     916:	9782                	jalr	a5
+     918:	e11d                	bnez	a0,93e <cyw_init+0x1ba>
+     91a:	50b2                	lw	ra,44(sp)
+     91c:	5422                	lw	s0,40(sp)
+     91e:	4785                	li	a5,1
+     920:	00f9a023          	sw	a5,0(s3)
+     924:	5902                	lw	s2,32(sp)
+     926:	5492                	lw	s1,36(sp)
+     928:	49f2                	lw	s3,28(sp)
+     92a:	6145                	addi	sp,sp,48
+     92c:	8082                	ret
+     92e:	d04a                	sw	s2,32(sp)
+     930:	bd59                	j	7c6 <cyw_init+0x42>
+     932:	5902                	lw	s2,32(sp)
+     934:	5579                	li	a0,-2
+     936:	bf45                	j	8e6 <cyw_init+0x162>
+     938:	5902                	lw	s2,32(sp)
+     93a:	5575                	li	a0,-3
+     93c:	b76d                	j	8e6 <cyw_init+0x162>
+     93e:	5902                	lw	s2,32(sp)
+     940:	5569                	li	a0,-6
+     942:	b755                	j	8e6 <cyw_init+0x162>
+     944:	5575                	li	a0,-3
+     946:	8082                	ret
+
+00000948 <cyw_deinit>:
+     948:	100007b7          	lui	a5,0x10000
+     94c:	00078793          	mv	a5,a5
+     950:	4398                	lw	a4,0(a5)
+     952:	e311                	bnez	a4,956 <cyw_deinit+0xe>
+     954:	8082                	ret
+     956:	6685                	lui	a3,0x1
+     958:	96be                	add	a3,a3,a5
+     95a:	52b8                	lw	a4,96(a3)
+     95c:	1141                	addi	sp,sp,-16
+     95e:	c606                	sw	ra,12(sp)
+     960:	c315                	beqz	a4,984 <cyw_deinit+0x3c>
+     962:	00c72803          	lw	a6,12(a4) # 3a000c <_binary_cyfmac55500_sdio_bin_size+0x3197b8>
+     966:	00080f63          	beqz	a6,984 <cyw_deinit+0x3c>
+     96a:	4601                	li	a2,0
+     96c:	4591                	li	a1,4
+     96e:	4501                	li	a0,0
+     970:	9802                	jalr	a6
+     972:	100017b7          	lui	a5,0x10001
+     976:	00078693          	mv	a3,a5
+     97a:	52b8                	lw	a4,96(a3)
+     97c:	100007b7          	lui	a5,0x10000
+     980:	00078793          	mv	a5,a5
+     984:	4f50                	lw	a2,28(a4)
+     986:	c615                	beqz	a2,9b2 <cyw_deinit+0x6a>
+     988:	c422                	sw	s0,8(sp)
+     98a:	4581                	li	a1,0
+     98c:	4509                	li	a0,2
+     98e:	9602                	jalr	a2
+     990:	10001437          	lui	s0,0x10001
+     994:	00040693          	mv	a3,s0
+     998:	52b8                	lw	a4,96(a3)
+     99a:	4581                	li	a1,0
+     99c:	4505                	li	a0,1
+     99e:	4f58                	lw	a4,28(a4)
+     9a0:	9702                	jalr	a4
+     9a2:	00040693          	mv	a3,s0
+     9a6:	52b8                	lw	a4,96(a3)
+     9a8:	4422                	lw	s0,8(sp)
+     9aa:	100007b7          	lui	a5,0x10000
+     9ae:	00078793          	mv	a5,a5
+     9b2:	4358                	lw	a4,4(a4)
+     9b4:	c711                	beqz	a4,9c0 <cyw_deinit+0x78>
+     9b6:	9702                	jalr	a4
+     9b8:	100007b7          	lui	a5,0x10000
+     9bc:	00078793          	mv	a5,a5
+     9c0:	40b2                	lw	ra,12(sp)
+     9c2:	0007a023          	sw	zero,0(a5) # 10000000 <g_cyw_dev>
+     9c6:	0141                	addi	sp,sp,16
+     9c8:	8082                	ret
+
+000009ca <cyw_up>:
+     9ca:	1141                	addi	sp,sp,-16
+     9cc:	c422                	sw	s0,8(sp)
+     9ce:	10000437          	lui	s0,0x10000
+     9d2:	00042783          	lw	a5,0(s0) # 10000000 <g_cyw_dev>
+     9d6:	c606                	sw	ra,12(sp)
+     9d8:	4509                	li	a0,2
+     9da:	00f57e63          	bgeu	a0,a5,9f6 <cyw_up+0x2c>
+     9de:	4685                	li	a3,1
+     9e0:	4601                	li	a2,0
+     9e2:	4581                	li	a1,0
+     9e4:	36bd                	jal	552 <cyw_ioctl>
+     9e6:	e501                	bnez	a0,9ee <cyw_up+0x24>
+     9e8:	4791                	li	a5,4
+     9ea:	00f42023          	sw	a5,0(s0)
+     9ee:	40b2                	lw	ra,12(sp)
+     9f0:	4422                	lw	s0,8(sp)
+     9f2:	0141                	addi	sp,sp,16
+     9f4:	8082                	ret
+     9f6:	5561                	li	a0,-8
+     9f8:	bfdd                	j	9ee <cyw_up+0x24>
+
+000009fa <cyw_get_chip_info>:
+     9fa:	cd11                	beqz	a0,a16 <cyw_get_chip_info+0x1c>
+     9fc:	100005b7          	lui	a1,0x10000
+     a00:	1141                	addi	sp,sp,-16
+     a02:	00458593          	addi	a1,a1,4 # 10000004 <g_cyw_dev+0x4>
+     a06:	02000613          	li	a2,32
+     a0a:	c606                	sw	ra,12(sp)
+     a0c:	2ded                	jal	1106 <memcpy>
+     a0e:	40b2                	lw	ra,12(sp)
+     a10:	4501                	li	a0,0
+     a12:	0141                	addi	sp,sp,16
+     a14:	8082                	ret
+     a16:	5575                	li	a0,-3
+     a18:	8082                	ret
+
+00000a1a <cyw_get_state>:
+     a1a:	100007b7          	lui	a5,0x10000
+     a1e:	0007a503          	lw	a0,0(a5) # 10000000 <g_cyw_dev>
+     a22:	8082                	ret
+
+00000a24 <cyw_poll>:
+     a24:	100007b7          	lui	a5,0x10000
+     a28:	00078793          	mv	a5,a5
+     a2c:	4394                	lw	a3,0(a5)
+     a2e:	4709                	li	a4,2
+     a30:	00d77e63          	bgeu	a4,a3,a4c <cyw_poll+0x28>
+     a34:	6705                	lui	a4,0x1
+     a36:	97ba                	add	a5,a5,a4
+     a38:	53bc                	lw	a5,96(a5)
+     a3a:	53dc                	lw	a5,36(a5)
+     a3c:	cb81                	beqz	a5,a4c <cyw_poll+0x28>
+     a3e:	1101                	addi	sp,sp,-32
+     a40:	ce06                	sw	ra,28(sp)
+     a42:	9782                	jalr	a5
+     a44:	e509                	bnez	a0,a4e <cyw_poll+0x2a>
+     a46:	40f2                	lw	ra,28(sp)
+     a48:	6105                	addi	sp,sp,32
+     a4a:	8082                	ret
+     a4c:	8082                	ret
+     a4e:	100015b7          	lui	a1,0x10001
+     a52:	0070                	addi	a2,sp,12
+     a54:	00b10513          	addi	a0,sp,11
+     a58:	86058593          	addi	a1,a1,-1952 # 10000860 <__global_pointer$+0x60>
+     a5c:	ec8ff0ef          	jal	124 <recv_sdpcm_frame>
+     a60:	40f2                	lw	ra,28(sp)
+     a62:	6105                	addi	sp,sp,32
+     a64:	8082                	ret
+
+00000a66 <litex_delay_us>:
+     a66:	06400793          	li	a5,100
+     a6a:	02f50533          	mul	a0,a0,a5
+     a6e:	1141                	addi	sp,sp,-16
+     a70:	c62a                	sw	a0,12(sp)
+     a72:	47b2                	lw	a5,12(sp)
+     a74:	fff78713          	addi	a4,a5,-1 # fffffff <_binary_cyfmac55500_sdio_bin_size+0xff797ab>
+     a78:	c63a                	sw	a4,12(sp)
+     a7a:	c799                	beqz	a5,a88 <litex_delay_us+0x22>
+     a7c:	0001                	nop
+     a7e:	47b2                	lw	a5,12(sp)
+     a80:	fff78713          	addi	a4,a5,-1
+     a84:	c63a                	sw	a4,12(sp)
+     a86:	fbfd                	bnez	a5,a7c <litex_delay_us+0x16>
+     a88:	0141                	addi	sp,sp,16
+     a8a:	8082                	ret
+
+00000a8c <litex_delay_ms>:
+     a8c:	c90d                	beqz	a0,abe <litex_delay_ms+0x32>
+     a8e:	6661                	lui	a2,0x18
+     a90:	1141                	addi	sp,sp,-16
+     a92:	fff50693          	addi	a3,a0,-1
+     a96:	6a060613          	addi	a2,a2,1696 # 186a0 <_binary_cyfmac55500_sdio_txt_size+0x1559b>
+     a9a:	55fd                	li	a1,-1
+     a9c:	c632                	sw	a2,12(sp)
+     a9e:	47b2                	lw	a5,12(sp)
+     aa0:	fff78713          	addi	a4,a5,-1
+     aa4:	c63a                	sw	a4,12(sp)
+     aa6:	c799                	beqz	a5,ab4 <litex_delay_ms+0x28>
+     aa8:	0001                	nop
+     aaa:	47b2                	lw	a5,12(sp)
+     aac:	fff78713          	addi	a4,a5,-1
+     ab0:	c63a                	sw	a4,12(sp)
+     ab2:	fbfd                	bnez	a5,aa8 <litex_delay_ms+0x1c>
+     ab4:	16fd                	addi	a3,a3,-1 # fff <litex_sdio_init+0x5d>
+     ab6:	feb693e3          	bne	a3,a1,a9c <litex_delay_ms+0x10>
+     aba:	0141                	addi	sp,sp,16
+     abc:	8082                	ret
+     abe:	8082                	ret
+
+00000ac0 <litex_sdio_enable_irq>:
+     ac0:	4501                	li	a0,0
+     ac2:	8082                	ret
+
+00000ac4 <litex_sdio_irq_pending>:
+     ac4:	4501                	li	a0,0
+     ac6:	8082                	ret
+
+00000ac8 <litex_sdio_deinit>:
+     ac8:	100017b7          	lui	a5,0x10001
+     acc:	06078223          	sb	zero,100(a5) # 10001064 <sdio_state>
+     ad0:	8082                	ret
+
+00000ad2 <litex_sdio_cmd53_write>:
+     ad2:	8000e7b7          	lui	a5,0x8000e
+     ad6:	c394                	sw	a3,0(a5)
+     ad8:	0026de93          	srli	t4,a3,0x2
+     adc:	020e8363          	beqz	t4,b02 <litex_sdio_cmd53_write+0x30>
+     ae0:	002e9313          	slli	t1,t4,0x2
+     ae4:	80004e37          	lui	t3,0x80004
+     ae8:	9332                	add	t1,t1,a2
+     aea:	40ce0e33          	sub	t3,t3,a2
+     aee:	87b2                	mv	a5,a2
+     af0:	0007a883          	lw	a7,0(a5) # 8000e000 <_firmware_end+0x3ff846a0>
+     af4:	00fe0833          	add	a6,t3,a5
+     af8:	0791                	addi	a5,a5,4
+     afa:	01182023          	sw	a7,0(a6)
+     afe:	fef319e3          	bne	t1,a5,af0 <litex_sdio_cmd53_write+0x1e>
+     b02:	0036f813          	andi	a6,a3,3
+     b06:	02080863          	beqz	a6,b36 <litex_sdio_cmd53_write+0x64>
+     b0a:	0e8a                	slli	t4,t4,0x2
+     b0c:	01d607b3          	add	a5,a2,t4
+     b10:	00381893          	slli	a7,a6,0x3
+     b14:	4601                	li	a2,0
+     b16:	4301                	li	t1,0
+     b18:	0007c803          	lbu	a6,0(a5)
+     b1c:	0785                	addi	a5,a5,1
+     b1e:	00c81833          	sll	a6,a6,a2
+     b22:	0621                	addi	a2,a2,8
+     b24:	01036333          	or	t1,t1,a6
+     b28:	fec898e3          	bne	a7,a2,b18 <litex_sdio_cmd53_write+0x46>
+     b2c:	800047b7          	lui	a5,0x80004
+     b30:	9ebe                	add	t4,t4,a5
+     b32:	006ea023          	sw	t1,0(t4)
+     b36:	00757793          	andi	a5,a0,7
+     b3a:	04000637          	lui	a2,0x4000
+     b3e:	01a71513          	slli	a0,a4,0x1a
+     b42:	07f2                	slli	a5,a5,0x1c
+     b44:	00959713          	slli	a4,a1,0x9
+     b48:	e0060613          	addi	a2,a2,-512 # 3fffe00 <_binary_cyfmac55500_sdio_bin_size+0x3f795ac>
+     b4c:	1ff6f693          	andi	a3,a3,511
+     b50:	8fc9                	or	a5,a5,a0
+     b52:	800005b7          	lui	a1,0x80000
+     b56:	8f71                	and	a4,a4,a2
+     b58:	8f55                	or	a4,a4,a3
+     b5a:	8fcd                	or	a5,a5,a1
+     b5c:	8fd9                	or	a5,a5,a4
+     b5e:	03500693          	li	a3,53
+     b62:	80002737          	lui	a4,0x80002
+     b66:	c314                	sw	a3,0(a4)
+     b68:	80003737          	lui	a4,0x80003
+     b6c:	c31c                	sw	a5,0(a4)
+     b6e:	80007737          	lui	a4,0x80007
+     b72:	431c                	lw	a5,0(a4)
+     b74:	fffd                	bnez	a5,b72 <litex_sdio_cmd53_write+0xa0>
+     b76:	8000a6b7          	lui	a3,0x8000a
+     b7a:	429c                	lw	a5,0(a3)
+     b7c:	8000b5b7          	lui	a1,0x8000b
+     b80:	3e800613          	li	a2,1000
+     b84:	e399                	bnez	a5,b8a <litex_sdio_cmd53_write+0xb8>
+     b86:	419c                	lw	a5,0(a1)
+     b88:	cba9                	beqz	a5,bda <litex_sdio_cmd53_write+0x108>
+     b8a:	1141                	addi	sp,sp,-16
+     b8c:	c632                	sw	a2,12(sp)
+     b8e:	47b2                	lw	a5,12(sp)
+     b90:	fff78713          	addi	a4,a5,-1 # 80003fff <_firmware_end+0x3ff7a69f>
+     b94:	c63a                	sw	a4,12(sp)
+     b96:	c799                	beqz	a5,ba4 <litex_sdio_cmd53_write+0xd2>
+     b98:	0001                	nop
+     b9a:	47b2                	lw	a5,12(sp)
+     b9c:	fff78713          	addi	a4,a5,-1
+     ba0:	c63a                	sw	a4,12(sp)
+     ba2:	fbfd                	bnez	a5,b98 <litex_sdio_cmd53_write+0xc6>
+     ba4:	429c                	lw	a5,0(a3)
+     ba6:	f3fd                	bnez	a5,b8c <litex_sdio_cmd53_write+0xba>
+     ba8:	419c                	lw	a5,0(a1)
+     baa:	f3ed                	bnez	a5,b8c <litex_sdio_cmd53_write+0xba>
+     bac:	8000c7b7          	lui	a5,0x8000c
+     bb0:	439c                	lw	a5,0(a5)
+     bb2:	8b85                	andi	a5,a5,1
+     bb4:	efb9                	bnez	a5,c12 <litex_sdio_cmd53_write+0x140>
+     bb6:	8000d7b7          	lui	a5,0x8000d
+     bba:	439c                	lw	a5,0(a5)
+     bbc:	8b8d                	andi	a5,a5,3
+     bbe:	eba1                	bnez	a5,c0e <litex_sdio_cmd53_write+0x13c>
+     bc0:	800037b7          	lui	a5,0x80003
+     bc4:	4388                	lw	a0,0(a5)
+     bc6:	67b5                	lui	a5,0xd
+     bc8:	b0078793          	addi	a5,a5,-1280 # cb00 <_binary_cyfmac55500_sdio_txt_size+0x99fb>
+     bcc:	8d7d                	and	a0,a0,a5
+     bce:	00a03533          	snez	a0,a0
+     bd2:	40a00533          	neg	a0,a0
+     bd6:	0141                	addi	sp,sp,16
+     bd8:	8082                	ret
+     bda:	8000c7b7          	lui	a5,0x8000c
+     bde:	439c                	lw	a5,0(a5)
+     be0:	8b85                	andi	a5,a5,1
+     be2:	e395                	bnez	a5,c06 <litex_sdio_cmd53_write+0x134>
+     be4:	8000d7b7          	lui	a5,0x8000d
+     be8:	439c                	lw	a5,0(a5)
+     bea:	8b8d                	andi	a5,a5,3
+     bec:	ef99                	bnez	a5,c0a <litex_sdio_cmd53_write+0x138>
+     bee:	800037b7          	lui	a5,0x80003
+     bf2:	4388                	lw	a0,0(a5)
+     bf4:	67b5                	lui	a5,0xd
+     bf6:	b0078793          	addi	a5,a5,-1280 # cb00 <_binary_cyfmac55500_sdio_txt_size+0x99fb>
+     bfa:	8d7d                	and	a0,a0,a5
+     bfc:	00a03533          	snez	a0,a0
+     c00:	40a00533          	neg	a0,a0
+     c04:	8082                	ret
+     c06:	5579                	li	a0,-2
+     c08:	8082                	ret
+     c0a:	557d                	li	a0,-1
+     c0c:	8082                	ret
+     c0e:	557d                	li	a0,-1
+     c10:	b7d9                	j	bd6 <litex_sdio_cmd53_write+0x104>
+     c12:	5579                	li	a0,-2
+     c14:	b7c9                	j	bd6 <litex_sdio_cmd53_write+0x104>
+
+00000c16 <litex_sdio_cmd53_read>:
+     c16:	04000837          	lui	a6,0x4000
+     c1a:	00757793          	andi	a5,a0,7
+     c1e:	e0080813          	addi	a6,a6,-512 # 3fffe00 <_binary_cyfmac55500_sdio_bin_size+0x3f795ac>
+     c22:	05a6                	slli	a1,a1,0x9
+     c24:	0105f5b3          	and	a1,a1,a6
+     c28:	076a                	slli	a4,a4,0x1a
+     c2a:	07f2                	slli	a5,a5,0x1c
+     c2c:	1ff6f813          	andi	a6,a3,511
+     c30:	8fd9                	or	a5,a5,a4
+     c32:	8000e537          	lui	a0,0x8000e
+     c36:	0105e733          	or	a4,a1,a6
+     c3a:	c114                	sw	a3,0(a0)
+     c3c:	8fd9                	or	a5,a5,a4
+     c3e:	03500593          	li	a1,53
+     c42:	80002737          	lui	a4,0x80002
+     c46:	c30c                	sw	a1,0(a4)
+     c48:	80003737          	lui	a4,0x80003
+     c4c:	c31c                	sw	a5,0(a4)
+     c4e:	80006737          	lui	a4,0x80006
+     c52:	431c                	lw	a5,0(a4)
+     c54:	fffd                	bnez	a5,c52 <litex_sdio_cmd53_read+0x3c>
+     c56:	8000a5b7          	lui	a1,0x8000a
+     c5a:	419c                	lw	a5,0(a1)
+     c5c:	8000b837          	lui	a6,0x8000b
+     c60:	3e800513          	li	a0,1000
+     c64:	e781                	bnez	a5,c6c <litex_sdio_cmd53_read+0x56>
+     c66:	00082783          	lw	a5,0(a6) # 8000b000 <_firmware_end+0x3ff816a0>
+     c6a:	cfd1                	beqz	a5,d06 <litex_sdio_cmd53_read+0xf0>
+     c6c:	1141                	addi	sp,sp,-16
+     c6e:	c62a                	sw	a0,12(sp)
+     c70:	47b2                	lw	a5,12(sp)
+     c72:	fff78713          	addi	a4,a5,-1
+     c76:	c63a                	sw	a4,12(sp)
+     c78:	c799                	beqz	a5,c86 <litex_sdio_cmd53_read+0x70>
+     c7a:	0001                	nop
+     c7c:	47b2                	lw	a5,12(sp)
+     c7e:	fff78713          	addi	a4,a5,-1
+     c82:	c63a                	sw	a4,12(sp)
+     c84:	fbfd                	bnez	a5,c7a <litex_sdio_cmd53_read+0x64>
+     c86:	419c                	lw	a5,0(a1)
+     c88:	f3fd                	bnez	a5,c6e <litex_sdio_cmd53_read+0x58>
+     c8a:	00082783          	lw	a5,0(a6)
+     c8e:	f3e5                	bnez	a5,c6e <litex_sdio_cmd53_read+0x58>
+     c90:	8000c7b7          	lui	a5,0x8000c
+     c94:	439c                	lw	a5,0(a5)
+     c96:	8b85                	andi	a5,a5,1
+     c98:	e7fd                	bnez	a5,d86 <litex_sdio_cmd53_read+0x170>
+     c9a:	8000d7b7          	lui	a5,0x8000d
+     c9e:	439c                	lw	a5,0(a5)
+     ca0:	8b8d                	andi	a5,a5,3
+     ca2:	efe1                	bnez	a5,d7a <litex_sdio_cmd53_read+0x164>
+     ca4:	800037b7          	lui	a5,0x80003
+     ca8:	438c                	lw	a1,0(a5)
+     caa:	67b5                	lui	a5,0xd
+     cac:	b0078793          	addi	a5,a5,-1280 # cb00 <_binary_cyfmac55500_sdio_txt_size+0x99fb>
+     cb0:	8dfd                	and	a1,a1,a5
+     cb2:	e5e1                	bnez	a1,d7a <litex_sdio_cmd53_read+0x164>
+     cb4:	0026d893          	srli	a7,a3,0x2
+     cb8:	02088263          	beqz	a7,cdc <litex_sdio_cmd53_read+0xc6>
+     cbc:	00289513          	slli	a0,a7,0x2
+     cc0:	80004837          	lui	a6,0x80004
+     cc4:	9532                	add	a0,a0,a2
+     cc6:	40c80833          	sub	a6,a6,a2
+     cca:	87b2                	mv	a5,a2
+     ccc:	00f80733          	add	a4,a6,a5
+     cd0:	4318                	lw	a4,0(a4)
+     cd2:	0791                	addi	a5,a5,4
+     cd4:	fee7ae23          	sw	a4,-4(a5)
+     cd8:	fea79ae3          	bne	a5,a0,ccc <litex_sdio_cmd53_read+0xb6>
+     cdc:	8a8d                	andi	a3,a3,3
+     cde:	c28d                	beqz	a3,d00 <litex_sdio_cmd53_read+0xea>
+     ce0:	088a                	slli	a7,a7,0x2
+     ce2:	800047b7          	lui	a5,0x80004
+     ce6:	97c6                	add	a5,a5,a7
+     ce8:	4388                	lw	a0,0(a5)
+     cea:	068e                	slli	a3,a3,0x3
+     cec:	011607b3          	add	a5,a2,a7
+     cf0:	00b55733          	srl	a4,a0,a1
+     cf4:	00e78023          	sb	a4,0(a5) # 80004000 <_firmware_end+0x3ff7a6a0>
+     cf8:	05a1                	addi	a1,a1,8 # 8000a008 <_firmware_end+0x3ff806a8>
+     cfa:	0785                	addi	a5,a5,1
+     cfc:	fed59ae3          	bne	a1,a3,cf0 <litex_sdio_cmd53_read+0xda>
+     d00:	4501                	li	a0,0
+     d02:	0141                	addi	sp,sp,16
+     d04:	8082                	ret
+     d06:	8000c7b7          	lui	a5,0x8000c
+     d0a:	439c                	lw	a5,0(a5)
+     d0c:	8b85                	andi	a5,a5,1
+     d0e:	eba5                	bnez	a5,d7e <litex_sdio_cmd53_read+0x168>
+     d10:	8000d7b7          	lui	a5,0x8000d
+     d14:	439c                	lw	a5,0(a5)
+     d16:	8b8d                	andi	a5,a5,3
+     d18:	e7ad                	bnez	a5,d82 <litex_sdio_cmd53_read+0x16c>
+     d1a:	800037b7          	lui	a5,0x80003
+     d1e:	438c                	lw	a1,0(a5)
+     d20:	67b5                	lui	a5,0xd
+     d22:	b0078793          	addi	a5,a5,-1280 # cb00 <_binary_cyfmac55500_sdio_txt_size+0x99fb>
+     d26:	8dfd                	and	a1,a1,a5
+     d28:	eda9                	bnez	a1,d82 <litex_sdio_cmd53_read+0x16c>
+     d2a:	0026d893          	srli	a7,a3,0x2
+     d2e:	02088263          	beqz	a7,d52 <litex_sdio_cmd53_read+0x13c>
+     d32:	00289513          	slli	a0,a7,0x2
+     d36:	80004837          	lui	a6,0x80004
+     d3a:	9532                	add	a0,a0,a2
+     d3c:	40c80833          	sub	a6,a6,a2
+     d40:	87b2                	mv	a5,a2
+     d42:	00f80733          	add	a4,a6,a5
+     d46:	4318                	lw	a4,0(a4)
+     d48:	0791                	addi	a5,a5,4
+     d4a:	fee7ae23          	sw	a4,-4(a5)
+     d4e:	fea79ae3          	bne	a5,a0,d42 <litex_sdio_cmd53_read+0x12c>
+     d52:	8a8d                	andi	a3,a3,3
+     d54:	c28d                	beqz	a3,d76 <litex_sdio_cmd53_read+0x160>
+     d56:	088a                	slli	a7,a7,0x2
+     d58:	800047b7          	lui	a5,0x80004
+     d5c:	97c6                	add	a5,a5,a7
+     d5e:	4388                	lw	a0,0(a5)
+     d60:	068e                	slli	a3,a3,0x3
+     d62:	011607b3          	add	a5,a2,a7
+     d66:	00b55733          	srl	a4,a0,a1
+     d6a:	00e78023          	sb	a4,0(a5) # 80004000 <_firmware_end+0x3ff7a6a0>
+     d6e:	05a1                	addi	a1,a1,8
+     d70:	0785                	addi	a5,a5,1
+     d72:	fed59ae3          	bne	a1,a3,d66 <litex_sdio_cmd53_read+0x150>
+     d76:	4501                	li	a0,0
+     d78:	8082                	ret
+     d7a:	557d                	li	a0,-1
+     d7c:	b759                	j	d02 <litex_sdio_cmd53_read+0xec>
+     d7e:	5579                	li	a0,-2
+     d80:	8082                	ret
+     d82:	557d                	li	a0,-1
+     d84:	8082                	ret
+     d86:	5579                	li	a0,-2
+     d88:	bfad                	j	d02 <litex_sdio_cmd53_read+0xec>
+
+00000d8a <send_command.isra.0>:
+     d8a:	800026b7          	lui	a3,0x80002
+     d8e:	80003737          	lui	a4,0x80003
+     d92:	c288                	sw	a0,0(a3)
+     d94:	c30c                	sw	a1,0(a4)
+     d96:	80005737          	lui	a4,0x80005
+     d9a:	431c                	lw	a5,0(a4)
+     d9c:	fffd                	bnez	a5,d9a <send_command.isra.0+0x10>
+     d9e:	8000a537          	lui	a0,0x8000a
+     da2:	411c                	lw	a5,0(a0)
+     da4:	65e1                	lui	a1,0x18
+     da6:	6a058593          	addi	a1,a1,1696 # 186a0 <_binary_cyfmac55500_sdio_txt_size+0x1559b>
+     daa:	06400693          	li	a3,100
+     dae:	c3b1                	beqz	a5,df2 <send_command.isra.0+0x68>
+     db0:	1141                	addi	sp,sp,-16
+     db2:	c62e                	sw	a1,12(sp)
+     db4:	47b2                	lw	a5,12(sp)
+     db6:	fff78713          	addi	a4,a5,-1
+     dba:	c63a                	sw	a4,12(sp)
+     dbc:	c799                	beqz	a5,dca <send_command.isra.0+0x40>
+     dbe:	0001                	nop
+     dc0:	47b2                	lw	a5,12(sp)
+     dc2:	fff78713          	addi	a4,a5,-1
+     dc6:	c63a                	sw	a4,12(sp)
+     dc8:	fbfd                	bnez	a5,dbe <send_command.isra.0+0x34>
+     dca:	16fd                	addi	a3,a3,-1 # 80001fff <_firmware_end+0x3ff7869f>
+     dcc:	c285                	beqz	a3,dec <send_command.isra.0+0x62>
+     dce:	411c                	lw	a5,0(a0)
+     dd0:	f3ed                	bnez	a5,db2 <send_command.isra.0+0x28>
+     dd2:	8000c7b7          	lui	a5,0x8000c
+     dd6:	439c                	lw	a5,0(a5)
+     dd8:	8b85                	andi	a5,a5,1
+     dda:	eb89                	bnez	a5,dec <send_command.isra.0+0x62>
+     ddc:	c609                	beqz	a2,de6 <send_command.isra.0+0x5c>
+     dde:	800037b7          	lui	a5,0x80003
+     de2:	439c                	lw	a5,0(a5)
+     de4:	c21c                	sw	a5,0(a2)
+     de6:	4501                	li	a0,0
+     de8:	0141                	addi	sp,sp,16
+     dea:	8082                	ret
+     dec:	5579                	li	a0,-2
+     dee:	0141                	addi	sp,sp,16
+     df0:	8082                	ret
+     df2:	8000c7b7          	lui	a5,0x8000c
+     df6:	439c                	lw	a5,0(a5)
+     df8:	8b85                	andi	a5,a5,1
+     dfa:	eb81                	bnez	a5,e0a <send_command.isra.0+0x80>
+     dfc:	c609                	beqz	a2,e06 <send_command.isra.0+0x7c>
+     dfe:	800037b7          	lui	a5,0x80003
+     e02:	439c                	lw	a5,0(a5)
+     e04:	c21c                	sw	a5,0(a2)
+     e06:	4501                	li	a0,0
+     e08:	8082                	ret
+     e0a:	5579                	li	a0,-2
+     e0c:	8082                	ret
+
+00000e0e <litex_sdio_cmd52_write>:
+     e0e:	891d                	andi	a0,a0,7
+     e10:	040007b7          	lui	a5,0x4000
+     e14:	0572                	slli	a0,a0,0x1c
+     e16:	05a6                	slli	a1,a1,0x9
+     e18:	e0078793          	addi	a5,a5,-512 # 3fffe00 <_binary_cyfmac55500_sdio_bin_size+0x3f795ac>
+     e1c:	8d51                	or	a0,a0,a2
+     e1e:	8dfd                	and	a1,a1,a5
+     e20:	1101                	addi	sp,sp,-32
+     e22:	8d4d                	or	a0,a0,a1
+     e24:	800005b7          	lui	a1,0x80000
+     e28:	8dc9                	or	a1,a1,a0
+     e2a:	0070                	addi	a2,sp,12
+     e2c:	03400513          	li	a0,52
+     e30:	ce06                	sw	ra,28(sp)
+     e32:	3fa1                	jal	d8a <send_command.isra.0>
+     e34:	ed09                	bnez	a0,e4e <litex_sdio_cmd52_write+0x40>
+     e36:	4532                	lw	a0,12(sp)
+     e38:	67b5                	lui	a5,0xd
+     e3a:	b0078793          	addi	a5,a5,-1280 # cb00 <_binary_cyfmac55500_sdio_txt_size+0x99fb>
+     e3e:	8d7d                	and	a0,a0,a5
+     e40:	00a03533          	snez	a0,a0
+     e44:	40a00533          	neg	a0,a0
+     e48:	40f2                	lw	ra,28(sp)
+     e4a:	6105                	addi	sp,sp,32
+     e4c:	8082                	ret
+     e4e:	5579                	li	a0,-2
+     e50:	bfe5                	j	e48 <litex_sdio_cmd52_write+0x3a>
+
+00000e52 <litex_sdio_cmd52_read>:
+     e52:	040007b7          	lui	a5,0x4000
+     e56:	891d                	andi	a0,a0,7
+     e58:	05a6                	slli	a1,a1,0x9
+     e5a:	e0078793          	addi	a5,a5,-512 # 3fffe00 <_binary_cyfmac55500_sdio_bin_size+0x3f795ac>
+     e5e:	1101                	addi	sp,sp,-32
+     e60:	0572                	slli	a0,a0,0x1c
+     e62:	8dfd                	and	a1,a1,a5
+     e64:	cc22                	sw	s0,24(sp)
+     e66:	8dc9                	or	a1,a1,a0
+     e68:	8432                	mv	s0,a2
+     e6a:	03400513          	li	a0,52
+     e6e:	0070                	addi	a2,sp,12
+     e70:	ce06                	sw	ra,28(sp)
+     e72:	3f21                	jal	d8a <send_command.isra.0>
+     e74:	ed09                	bnez	a0,e8e <litex_sdio_cmd52_read+0x3c>
+     e76:	47b2                	lw	a5,12(sp)
+     e78:	0087d713          	srli	a4,a5,0x8
+     e7c:	0cb77713          	andi	a4,a4,203
+     e80:	eb09                	bnez	a4,e92 <litex_sdio_cmd52_read+0x40>
+     e82:	00f40023          	sb	a5,0(s0)
+     e86:	40f2                	lw	ra,28(sp)
+     e88:	4462                	lw	s0,24(sp)
+     e8a:	6105                	addi	sp,sp,32
+     e8c:	8082                	ret
+     e8e:	5579                	li	a0,-2
+     e90:	bfdd                	j	e86 <litex_sdio_cmd52_read+0x34>
+     e92:	557d                	li	a0,-1
+     e94:	bfcd                	j	e86 <litex_sdio_cmd52_read+0x34>
+
+00000e96 <litex_sdio_enable_func>:
+     e96:	1101                	addi	sp,sp,-32
+     e98:	cc22                	sw	s0,24(sp)
+     e9a:	ca26                	sw	s1,20(sp)
+     e9c:	842a                	mv	s0,a0
+     e9e:	84ae                	mv	s1,a1
+     ea0:	0070                	addi	a2,sp,12
+     ea2:	40000593          	li	a1,1024
+     ea6:	03400513          	li	a0,52
+     eaa:	ce06                	sw	ra,28(sp)
+     eac:	3df9                	jal	d8a <send_command.isra.0>
+     eae:	ed21                	bnez	a0,f06 <litex_sdio_enable_func+0x70>
+     eb0:	45b2                	lw	a1,12(sp)
+     eb2:	0085d793          	srli	a5,a1,0x8
+     eb6:	0cb7f793          	andi	a5,a5,203
+     eba:	eba1                	bnez	a5,f0a <litex_sdio_enable_func+0x74>
+     ebc:	4785                	li	a5,1
+     ebe:	008797b3          	sll	a5,a5,s0
+     ec2:	ec95                	bnez	s1,efe <litex_sdio_enable_func+0x68>
+     ec4:	fff7c793          	not	a5,a5
+     ec8:	8dfd                	and	a1,a1,a5
+     eca:	0ff5f513          	zext.b	a0,a1
+     ece:	800005b7          	lui	a1,0x80000
+     ed2:	40058593          	addi	a1,a1,1024 # 80000400 <_firmware_end+0x3ff76aa0>
+     ed6:	8dc9                	or	a1,a1,a0
+     ed8:	0070                	addi	a2,sp,12
+     eda:	03400513          	li	a0,52
+     ede:	3575                	jal	d8a <send_command.isra.0>
+     ee0:	e11d                	bnez	a0,f06 <litex_sdio_enable_func+0x70>
+     ee2:	4532                	lw	a0,12(sp)
+     ee4:	67b5                	lui	a5,0xd
+     ee6:	b0078793          	addi	a5,a5,-1280 # cb00 <_binary_cyfmac55500_sdio_txt_size+0x99fb>
+     eea:	8d7d                	and	a0,a0,a5
+     eec:	00a03533          	snez	a0,a0
+     ef0:	40a00533          	neg	a0,a0
+     ef4:	40f2                	lw	ra,28(sp)
+     ef6:	4462                	lw	s0,24(sp)
+     ef8:	44d2                	lw	s1,20(sp)
+     efa:	6105                	addi	sp,sp,32
+     efc:	8082                	ret
+     efe:	8ddd                	or	a1,a1,a5
+     f00:	0ff5f513          	zext.b	a0,a1
+     f04:	b7e9                	j	ece <litex_sdio_enable_func+0x38>
+     f06:	5579                	li	a0,-2
+     f08:	b7f5                	j	ef4 <litex_sdio_enable_func+0x5e>
+     f0a:	557d                	li	a0,-1
+     f0c:	b7e5                	j	ef4 <litex_sdio_enable_func+0x5e>
+
+00000f0e <litex_sdio_set_block_size>:
+     f0e:	479d                	li	a5,7
+     f10:	08a7e763          	bltu	a5,a0,f9e <litex_sdio_set_block_size+0x90>
+     f14:	7179                	addi	sp,sp,-48
+     f16:	d422                	sw	s0,40(sp)
+     f18:	00851413          	slli	s0,a0,0x8
+     f1c:	01040793          	addi	a5,s0,16
+     f20:	0ff5f713          	zext.b	a4,a1
+     f24:	07a6                	slli	a5,a5,0x9
+     f26:	ce4e                	sw	s3,28(sp)
+     f28:	8fd9                	or	a5,a5,a4
+     f2a:	800009b7          	lui	s3,0x80000
+     f2e:	d226                	sw	s1,36(sp)
+     f30:	d04a                	sw	s2,32(sp)
+     f32:	84ae                	mv	s1,a1
+     f34:	892a                	mv	s2,a0
+     f36:	0137e5b3          	or	a1,a5,s3
+     f3a:	0070                	addi	a2,sp,12
+     f3c:	03400513          	li	a0,52
+     f40:	d606                	sw	ra,44(sp)
+     f42:	35a1                	jal	d8a <send_command.isra.0>
+     f44:	e939                	bnez	a0,f9a <litex_sdio_set_block_size+0x8c>
+     f46:	47b2                	lw	a5,12(sp)
+     f48:	0087d713          	srli	a4,a5,0x8
+     f4c:	0cb77713          	andi	a4,a4,203
+     f50:	e339                	bnez	a4,f96 <litex_sdio_set_block_size+0x88>
+     f52:	0445                	addi	s0,s0,17
+     f54:	0426                	slli	s0,s0,0x9
+     f56:	0084d793          	srli	a5,s1,0x8
+     f5a:	8c5d                	or	s0,s0,a5
+     f5c:	0070                	addi	a2,sp,12
+     f5e:	013465b3          	or	a1,s0,s3
+     f62:	03400513          	li	a0,52
+     f66:	3515                	jal	d8a <send_command.isra.0>
+     f68:	e90d                	bnez	a0,f9a <litex_sdio_set_block_size+0x8c>
+     f6a:	47b2                	lw	a5,12(sp)
+     f6c:	0087d713          	srli	a4,a5,0x8
+     f70:	0cb77713          	andi	a4,a4,203
+     f74:	e30d                	bnez	a4,f96 <litex_sdio_set_block_size+0x88>
+     f76:	10001737          	lui	a4,0x10001
+     f7a:	00191793          	slli	a5,s2,0x1
+     f7e:	06470713          	addi	a4,a4,100 # 10001064 <sdio_state>
+     f82:	97ba                	add	a5,a5,a4
+     f84:	00979223          	sh	s1,4(a5)
+     f88:	50b2                	lw	ra,44(sp)
+     f8a:	5422                	lw	s0,40(sp)
+     f8c:	5492                	lw	s1,36(sp)
+     f8e:	5902                	lw	s2,32(sp)
+     f90:	49f2                	lw	s3,28(sp)
+     f92:	6145                	addi	sp,sp,48
+     f94:	8082                	ret
+     f96:	557d                	li	a0,-1
+     f98:	bfc5                	j	f88 <litex_sdio_set_block_size+0x7a>
+     f9a:	5579                	li	a0,-2
+     f9c:	b7f5                	j	f88 <litex_sdio_set_block_size+0x7a>
+     f9e:	557d                	li	a0,-1
+     fa0:	8082                	ret
+
+00000fa2 <litex_sdio_init>:
+     fa2:	7179                	addi	sp,sp,-48
+     fa4:	d226                	sw	s1,36(sp)
+     fa6:	100014b7          	lui	s1,0x10001
+     faa:	4651                	li	a2,20
+     fac:	06448513          	addi	a0,s1,100 # 10001064 <sdio_state>
+     fb0:	4581                	li	a1,0
+     fb2:	d606                	sw	ra,44(sp)
+     fb4:	d422                	sw	s0,40(sp)
+     fb6:	2a35                	jal	10f2 <memset>
+     fb8:	800007b7          	lui	a5,0x80000
+     fbc:	439c                	lw	a5,0(a5)
+     fbe:	6661                	lui	a2,0x18
+     fc0:	800017b7          	lui	a5,0x80001
+     fc4:	439c                	lw	a5,0(a5)
+     fc6:	6a060613          	addi	a2,a2,1696 # 186a0 <_binary_cyfmac55500_sdio_txt_size+0x1559b>
+     fca:	46a9                	li	a3,10
+     fcc:	c032                	sw	a2,0(sp)
+     fce:	4782                	lw	a5,0(sp)
+     fd0:	fff78713          	addi	a4,a5,-1 # 80000fff <_firmware_end+0x3ff7769f>
+     fd4:	c03a                	sw	a4,0(sp)
+     fd6:	c799                	beqz	a5,fe4 <litex_sdio_init+0x42>
+     fd8:	0001                	nop
+     fda:	4782                	lw	a5,0(sp)
+     fdc:	fff78713          	addi	a4,a5,-1
+     fe0:	c03a                	sw	a4,0(sp)
+     fe2:	fbfd                	bnez	a5,fd8 <litex_sdio_init+0x36>
+     fe4:	16fd                	addi	a3,a3,-1
+     fe6:	f2fd                	bnez	a3,fcc <litex_sdio_init+0x2a>
+     fe8:	4601                	li	a2,0
+     fea:	4581                	li	a1,0
+     fec:	4501                	li	a0,0
+     fee:	3b71                	jal	d8a <send_command.isra.0>
+     ff0:	6661                	lui	a2,0x18
+     ff2:	6a060613          	addi	a2,a2,1696 # 186a0 <_binary_cyfmac55500_sdio_txt_size+0x1559b>
+     ff6:	46a9                	li	a3,10
+     ff8:	e92d                	bnez	a0,106a <litex_sdio_init+0xc8>
+     ffa:	c232                	sw	a2,4(sp)
+     ffc:	4792                	lw	a5,4(sp)
+     ffe:	fff78713          	addi	a4,a5,-1
+    1002:	c23a                	sw	a4,4(sp)
+    1004:	c799                	beqz	a5,1012 <litex_sdio_init+0x70>
+    1006:	0001                	nop
+    1008:	4792                	lw	a5,4(sp)
+    100a:	fff78713          	addi	a4,a5,-1
+    100e:	c23a                	sw	a4,4(sp)
+    1010:	fbfd                	bnez	a5,1006 <litex_sdio_init+0x64>
+    1012:	16fd                	addi	a3,a3,-1
+    1014:	f2fd                	bnez	a3,ffa <litex_sdio_init+0x58>
+    1016:	0070                	addi	a2,sp,12
+    1018:	4581                	li	a1,0
+    101a:	4515                	li	a0,5
+    101c:	33bd                	jal	d8a <send_command.isra.0>
+    101e:	e531                	bnez	a0,106a <litex_sdio_init+0xc8>
+    1020:	6461                	lui	s0,0x18
+    1022:	d04a                	sw	s2,32(sp)
+    1024:	ce4e                	sw	s3,28(sp)
+    1026:	6a040413          	addi	s0,s0,1696 # 186a0 <_binary_cyfmac55500_sdio_txt_size+0x1559b>
+    102a:	06300913          	li	s2,99
+    102e:	59fd                	li	s3,-1
+    1030:	0070                	addi	a2,sp,12
+    1032:	00ff85b7          	lui	a1,0xff8
+    1036:	4515                	li	a0,5
+    1038:	3b89                	jal	d8a <send_command.isra.0>
+    103a:	e515                	bnez	a0,1066 <litex_sdio_init+0xc4>
+    103c:	47b2                	lw	a5,12(sp)
+    103e:	0207cd63          	bltz	a5,1078 <litex_sdio_init+0xd6>
+    1042:	47a9                	li	a5,10
+    1044:	c422                	sw	s0,8(sp)
+    1046:	4722                	lw	a4,8(sp)
+    1048:	fff70693          	addi	a3,a4,-1
+    104c:	c436                	sw	a3,8(sp)
+    104e:	c719                	beqz	a4,105c <litex_sdio_init+0xba>
+    1050:	0001                	nop
+    1052:	4722                	lw	a4,8(sp)
+    1054:	fff70693          	addi	a3,a4,-1
+    1058:	c436                	sw	a3,8(sp)
+    105a:	fb7d                	bnez	a4,1050 <litex_sdio_init+0xae>
+    105c:	17fd                	addi	a5,a5,-1
+    105e:	f3fd                	bnez	a5,1044 <litex_sdio_init+0xa2>
+    1060:	197d                	addi	s2,s2,-1
+    1062:	fd3917e3          	bne	s2,s3,1030 <litex_sdio_init+0x8e>
+    1066:	5902                	lw	s2,32(sp)
+    1068:	49f2                	lw	s3,28(sp)
+    106a:	5479                	li	s0,-2
+    106c:	50b2                	lw	ra,44(sp)
+    106e:	8522                	mv	a0,s0
+    1070:	5422                	lw	s0,40(sp)
+    1072:	5492                	lw	s1,36(sp)
+    1074:	6145                	addi	sp,sp,48
+    1076:	8082                	ret
+    1078:	fe0907e3          	beqz	s2,1066 <litex_sdio_init+0xc4>
+    107c:	0070                	addi	a2,sp,12
+    107e:	4581                	li	a1,0
+    1080:	450d                	li	a0,3
+    1082:	3321                	jal	d8a <send_command.isra.0>
+    1084:	f16d                	bnez	a0,1066 <litex_sdio_init+0xc4>
+    1086:	47b2                	lw	a5,12(sp)
+    1088:	75c1                	lui	a1,0xffff0
+    108a:	06448493          	addi	s1,s1,100
+    108e:	0107d713          	srli	a4,a5,0x10
+    1092:	8dfd                	and	a1,a1,a5
+    1094:	0070                	addi	a2,sp,12
+    1096:	451d                	li	a0,7
+    1098:	00e49123          	sh	a4,2(s1)
+    109c:	31fd                	jal	d8a <send_command.isra.0>
+    109e:	842a                	mv	s0,a0
+    10a0:	f179                	bnez	a0,1066 <litex_sdio_init+0xc4>
+    10a2:	6585                	lui	a1,0x1
+    10a4:	e0058593          	addi	a1,a1,-512 # e00 <send_command.isra.0+0x76>
+    10a8:	0070                	addi	a2,sp,12
+    10aa:	03400513          	li	a0,52
+    10ae:	39f1                	jal	d8a <send_command.isra.0>
+    10b0:	e115                	bnez	a0,10d4 <litex_sdio_init+0x132>
+    10b2:	47b2                	lw	a5,12(sp)
+    10b4:	0087d713          	srli	a4,a5,0x8
+    10b8:	0cb77713          	andi	a4,a4,203
+    10bc:	ef01                	bnez	a4,10d4 <litex_sdio_init+0x132>
+    10be:	800015b7          	lui	a1,0x80001
+    10c2:	0fc7f793          	andi	a5,a5,252
+    10c6:	e0258593          	addi	a1,a1,-510 # 80000e02 <_firmware_end+0x3ff774a2>
+    10ca:	0070                	addi	a2,sp,12
+    10cc:	8ddd                	or	a1,a1,a5
+    10ce:	03400513          	li	a0,52
+    10d2:	3965                	jal	d8a <send_command.isra.0>
+    10d4:	50b2                	lw	ra,44(sp)
+    10d6:	8522                	mv	a0,s0
+    10d8:	5422                	lw	s0,40(sp)
+    10da:	4785                	li	a5,1
+    10dc:	00f48023          	sb	a5,0(s1)
+    10e0:	5902                	lw	s2,32(sp)
+    10e2:	49f2                	lw	s3,28(sp)
+    10e4:	5492                	lw	s1,36(sp)
+    10e6:	6145                	addi	sp,sp,48
+    10e8:	8082                	ret
+
+000010ea <litex_get_sdio_ops>:
+    10ea:	6505                	lui	a0,0x1
+    10ec:	15450513          	addi	a0,a0,340 # 1154 <litex_sdio_ops>
+    10f0:	8082                	ret
+
+000010f2 <memset>:
+    10f2:	00c50733          	add	a4,a0,a2
+    10f6:	87aa                	mv	a5,a0
+    10f8:	c611                	beqz	a2,1104 <memset+0x12>
+    10fa:	0785                	addi	a5,a5,1
+    10fc:	feb78fa3          	sb	a1,-1(a5)
+    1100:	fef71de3          	bne	a4,a5,10fa <memset+0x8>
+    1104:	8082                	ret
+
+00001106 <memcpy>:
+    1106:	ca19                	beqz	a2,111c <memcpy+0x16>
+    1108:	962a                	add	a2,a2,a0
+    110a:	87aa                	mv	a5,a0
+    110c:	0005c703          	lbu	a4,0(a1)
+    1110:	0785                	addi	a5,a5,1
+    1112:	0585                	addi	a1,a1,1
+    1114:	fee78fa3          	sb	a4,-1(a5)
+    1118:	fef61ae3          	bne	a2,a5,110c <memcpy+0x6>
+    111c:	8082                	ret
+
+0000111e <strlen>:
+    111e:	00054783          	lbu	a5,0(a0)
+    1122:	cb81                	beqz	a5,1132 <strlen+0x14>
+    1124:	4781                	li	a5,0
+    1126:	0785                	addi	a5,a5,1
+    1128:	00f50733          	add	a4,a0,a5
+    112c:	00074703          	lbu	a4,0(a4)
+    1130:	fb7d                	bnez	a4,1126 <strlen+0x8>
+    1132:	853e                	mv	a0,a5
+    1134:	8082                	ret

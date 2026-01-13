@@ -1,0 +1,47 @@
+/*
+ * CYW55500 WiFi - Pico 2 RISC-V overlay
+ *
+ * Quectel FCS96xN connection:
+ *   GP18 - SDIO_CLK
+ *   GP19 - SDIO_CMD
+ *   GP20 - SDIO_D0
+ *   GP21 - SDIO_D1
+ *   GP22 - SDIO_D2
+ *   GP26 - SDIO_D3
+ *   GP27 - WL_REG_ON
+ *   GP28 - WL_HOST_WAKE (optional)
+ */
+
+/ {
+	chosen {
+		zephyr,console = &uart0;
+		zephyr,shell-uart = &uart0;
+	};
+
+	wifi_pins {
+		compatible = "gpio-keys";
+
+		wifi_reg_on: wifi_reg_on {
+			gpios = <&gpio0 27 GPIO_ACTIVE_HIGH>;
+			label = "WiFi REG_ON";
+		};
+
+		wifi_host_wake: wifi_host_wake {
+			gpios = <&gpio0 28 GPIO_ACTIVE_HIGH>;
+			label = "WiFi HOST_WAKE";
+		};
+	};
+
+	aliases {
+		wifi-reg-on = &wifi_reg_on;
+	};
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&uart0 {
+	status = "okay";
+	current-speed = <115200>;
+};
