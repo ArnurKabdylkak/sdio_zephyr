@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# LiteX VexRiscv with SDIO Controller Board Configuration
+#
+
+config BOARD_LITEX_VEXRISCV_SDIO
+	bool "LiteX VexRiscv SoC with SDIO controller on Tang Primer 20K"
+	depends on SOC_RISCV32_LITEX_VEXRISCV
+	help
+	  LiteX VexRiscv SoC with custom SDIO host controller.
+	  This board targets the Sipeed Tang Primer 20K FPGA with:
+	  - VexRiscv RV32IM CPU at 48 MHz
+	  - 8 KB SRAM
+	  - 128 KB Flash/ROM
+	  - Custom SDIO controller at 0x80000000
+	  - UART console
+	  - System timer

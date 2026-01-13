@@ -1,0 +1,212 @@
+/dts-v1/;
+
+/*
+ * LiteX VexRiscv SoC with SDIO Controller
+ * Board: Sipeed Tang Primer 20K
+ *
+ * This Device Tree describes the complete SoC configuration.
+ *
+ * IMPORTANT: After building LiteX, verify addresses with:
+ *   cat litex/build/csr.csv
+ * And update this file if needed.
+ */
+
+/ {
+	#address-cells = <1>;
+	#size-cells = <1>;
+	compatible = "litex,vexriscv";
+	model = "LiteX VexRiscv SoC - Tang Primer 20K with SDIO";
+
+	chosen {
+		zephyr,console = &uart0;
+		zephyr,shell-uart = &uart0;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		timebase-frequency = <48000000>;
+
+		cpu0: cpu@0 {
+			device_type = "cpu";
+			compatible = "riscv";
+			reg = <0>;
+			riscv,isa = "rv32im";
+			mmu-type = "riscv,none";
+			clock-frequency = <48000000>;
+
+			interrupt-controller {
+				#interrupt-cells = <1>;
+				interrupt-controller;
+				compatible = "riscv,cpu-intc";
+			};
+		};
+	};
+
+	soc {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "litex,vexriscv";
+		ranges;
+
+		/*
+		 * Flash / ROM Region
+		 * Address: 0x00000000, Size: 128 KB
+		 * Contains bootloader and initialization code
+		 */
+		flash0: flash@0 {
+			compatible = "soc-nv-flash";
+			reg = <0x00000000 0x20000>;
+			status = "okay";
+		};
+
+		/*
+		 * SRAM Region
+		 * Address: 0x10000000, Size: 8 KB
+		 * Main system RAM
+		 */
+		sram0: memory@10000000 {
+			compatible = "mmio-sram";
+			reg = <0x10000000 0x2000>;
+			device_type = "memory";
+		};
+
+		/*
+		 * UART Controller
+		 * Address: 0xf0001000 (typical LiteX CSR address)
+		 *
+		 * NOTE: Verify actual address after LiteX build:
+		 *   grep CSR_UART_BASE litex/build/software/include/generated/csr.h
+		 */
+		uart0: serial@f0001000 {
+			compatible = "litex,uart0";
+			reg = <0xf0001000 0x100>;
+			status = "okay";
+			current-speed = <115200>;
+		};
+
+		/*
+		 * Timer Controller
+		 * Address: 0xf0000800 (typical LiteX CSR address)
+		 *
+		 * NOTE: Verify actual address after LiteX build:
+		 *   grep CSR_TIMER0_BASE litex/build/software/include/generated/csr.h
+		 */
+		timer0: timer@f0000800 {
+			compatible = "litex,timer0";
+			reg = <0xf0000800 0x40>;
+			interrupts = <1>;
+			status = "okay";
+		};
+
+		/*
+		 * =========================================================================
+		 * SDIO Host Controller - Custom Wishbone Peripheral
+		 * =========================================================================
+		 *
+		 * Base Address: 0x80000000 (fixed in sipeed_tang_primer_20k.py:247)
+		 * Region Size: 0x10000 (64 KB)
+		 *
+		 * This controller implements SDIO interface via SystemVerilog modules:
+		 * - WishboneController.sv - Wishbone bus interface
+		 * - SDCommandController.sv - SDIO CMD line controller
+		 * - SDDataController.sv - SDIO DAT[3:0] controller
+		 *
+		 * Register Map (each register at 0x1000 offset):
+		 *   0x0000 - MAIN_CLOCK_FREQ (R/W): System clock frequency in Hz
+		 *   0x1000 - SD_CLOCK_FREQ (R/W): SDIO clock frequency in Hz
+		 *   0x2000 - CMD_INDEX (W): Command index [5:0]
+		 *   0x3000 - CMD_ARGUMENT (R/W): Command argument / Response data
+		 *   0x4000 - DATA_BUFFER: Data buffer array (512 x 32-bit words = 2KB)
+		 *   0x5000 - SEND_CMD_OP (R): Trigger command-only operation
+		 *   0x6000 - SEND_CMD_READ_DATA_OP (R): Trigger command + read data
+		 *   0x7000 - SEND_CMD_SEND_DATA_OP (R): Trigger command + write data
+		 *   0x8000 - READ_DATA_OP (R): Trigger read data only
+		 *   0x9000 - SEND_DATA_OP (R): Trigger write data only
+		 *   0xA000 - CMD_BUSY (R): Command controller busy flag
+		 *   0xB000 - DATA_BUSY (R): Data controller busy flag
+		 *   0xC000 - CMD_STATUS (R): Command status (timeout, response index)
+		 *   0xD000 - DATA_STATUS (R): Data status (CRC error, timeout)
+		 *   0xE000 - DATA_LENGTH (R/W): Data length in bytes [10:0]
+		 */
+		sdio0: sdio@80000000 {
+			compatible = "litex,sdio";
+			reg = <0x80000000 0x10000>;
+			reg-io-width = <4>;
+			status = "okay";
+
+			/* Hardware capabilities */
+			max-frequency = <50000000>;
+			clock-frequency = <48000000>;
+			bus-width = <4>;
+
+			/* Buffer size */
+			fifo-depth = <512>;  /* 512 x 32-bit words = 2048 bytes */
+
+			/*
+			 * Register offset definitions
+			 * These are used by the HAL (sdio_hal.h)
+			 */
+			litex,reg-main-clk-freq = <0x0000>;
+			litex,reg-sd-clk-freq = <0x1000>;
+			litex,reg-cmd-index = <0x2000>;
+			litex,reg-cmd-argument = <0x3000>;
+			litex,reg-data-buffer = <0x4000>;
+			litex,reg-send-cmd-op = <0x5000>;
+			litex,reg-send-cmd-read-data-op = <0x6000>;
+			litex,reg-send-cmd-send-data-op = <0x7000>;
+			litex,reg-read-data-op = <0x8000>;
+			litex,reg-send-data-op = <0x9000>;
+			litex,reg-cmd-busy = <0xA000>;
+			litex,reg-data-busy = <0xB000>;
+			litex,reg-cmd-status = <0xC000>;
+			litex,reg-data-status = <0xD000>;
+			litex,reg-data-length = <0xE000>;
+
+			/* GPIO pins (from sipeed_tang_primer_20k.py) */
+			pinctrl-names = "default";
+
+			/*
+			 * SDIO signals connected to:
+			 * CLK  -> M14
+			 * CMD  -> M15
+			 * DAT0 -> J16
+			 * DAT1 -> J14
+			 * DAT2 -> R11
+			 * DAT3 -> T12
+			 */
+		};
+
+		/*
+		 * DDR3 SDRAM Controller (if enabled in LiteX)
+		 * Uncomment if using DRAM instead of integrated SRAM
+		 */
+		/*
+		ddr0: memory@40000000 {
+			compatible = "litex,ddr";
+			reg = <0x40000000 0x4000000>;  // 64 MB
+			device_type = "memory";
+			status = "disabled";
+		};
+		*/
+	};
+};
+
+/*
+ * Node-specific overrides
+ */
+
+&uart0 {
+	status = "okay";
+	current-speed = <115200>;
+};
+
+&timer0 {
+	status = "okay";
+};
+
+&sdio0 {
+	status = "okay";
+};

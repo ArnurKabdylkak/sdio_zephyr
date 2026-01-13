@@ -1,0 +1,64 @@
+/*
+ * Device Tree Overlay для LiteX Tang Primer 20K SDIO SoC
+ *
+ * Этот файл добавляет кастомный SDIO контроллер к базовому LiteX VexRiscv board.
+ * Адреса берутся из sipeed_tang_primer_20k.py:
+ * - SDIO base: 0x80000000 (строка 247)
+ * - Size: 0x10000 (строка 249)
+ */
+
+/ {
+	soc {
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		/* SDIO Host Controller - LiteX Custom Peripheral */
+		sdio0: sdio@80000000 {
+			compatible = "litex,sdio";
+			reg = <0x80000000 0x10000>;
+			reg-io-width = <4>;
+			status = "okay";
+
+			/*
+			 * Wishbone register offsets (из WishboneController.sv)
+			 * Каждый регистр смещен на 0x1000
+			 */
+			litex,main-clk-freq = <0x0000>;
+			litex,sd-clk-freq = <0x1000>;
+			litex,cmd-index = <0x2000>;
+			litex,cmd-argument = <0x3000>;
+			litex,data-buffer = <0x4000>;  /* 512 x 32-bit words */
+			litex,send-cmd-op = <0x5000>;
+			litex,send-cmd-read-data-op = <0x6000>;
+			litex,send-cmd-send-data-op = <0x7000>;
+			litex,read-data-op = <0x8000>;
+			litex,send-data-op = <0x9000>;
+			litex,cmd-busy = <0xA000>;
+			litex,data-busy = <0xB000>;
+			litex,cmd-status = <0xC000>;
+			litex,data-status = <0xD000>;
+			litex,data-length = <0xE000>;
+
+			/* Clock configuration */
+			clock-frequency = <48000000>;  /* System clock */
+			max-frequency = <25000000>;    /* Max SDIO clock */
+		};
+	};
+};
+
+/*
+ * Если нужно переопределить UART/RAM адреса из csr.json,
+ * раскомментируйте и обновите после сборки LiteX:
+ */
+
+/*
+&uart0 {
+	reg = <0xf0001000 0x100>;  // Замените на адрес из csr.json
+	status = "okay";
+	current-speed = <115200>;
+};
+
+&ram0 {
+	reg = <0x10000000 0x2000>;  // Замените на размер из csr.json
+};
+*/

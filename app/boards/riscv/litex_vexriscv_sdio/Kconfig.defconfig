@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# LiteX VexRiscv SDIO Board Default Configuration
+#
+
+if BOARD_LITEX_VEXRISCV_SDIO
+
+config BOARD
+	default "litex_vexriscv_sdio"
+
+# SoC configuration
+config SOC
+	default "vexriscv"
+
+# CPU configuration
+config SYS_CLOCK_HW_CYCLES_PER_SEC
+	default 48000000
+
+# Console configuration
+if SERIAL
+
+config UART_CONSOLE
+	default y
+
+endif # SERIAL
+
+# Timer configuration
+if RISCV_MACHINE_TIMER
+
+config RISCV_MACHINE_TIMER_SYSTEM_CLOCK_DIVIDER
+	default 1
+
+endif # RISCV_MACHINE_TIMER
+
+endif # BOARD_LITEX_VEXRISCV_SDIO
